@@ -1,0 +1,45 @@
+\documentclass[11pt,a4paper,oneside]{mwart}
+%cała konfiguracja TeXa
+\usepackage[utf8]{inputenc}
+
+\def \MYHEADER {Planowanie działań i ruchu robotów}
+\def \MYTITLE {Labirynty czy coś}
+\def \MYPDFTITLE {Plan.dzial.i.ruch.rob}
+
+\def \MYPDFDATE {\today}
+
+\def \MYAUTHOR {\emph{Autorzy:}\\Wojciech \textsc{Matkowski}\\Piotr \textsc{Mika}\\Paweł \textsc{Ruciński}}
+\def \MYPDFAUTHOR {Piotr Mika}
+
+\def \MYLECTURER {\emph{Prowadzący:} \\dr~in\.z. I.~\textsc{Dulęba}}
+
+\def \MYLSTSETLANGUAGE {matlab}
+
+\def \MYLSTSETFRAME {lines}
+						%none, %single, 
+
+\def \MYLSTSETKEYWORDS {} 
+
+\input{_cfg_rob.tex}
+
+\begin{document}
+
+\input{_str_tytulowa.tex}
+
+
+\newpage
+\thispagestyle{empty}
+~~~~~~~~~~~~~~
+\newpage
+
+\setcounter{tocdepth}{3}
+\tableofcontents
+\newpage
+\section{Wstęp}
+
+\section{Realizacja i wyniki}
+
+\section{Wnioski}
+
+\end{document}
+
