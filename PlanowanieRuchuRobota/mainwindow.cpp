@@ -24,13 +24,10 @@ MainWindow::~MainWindow()
 void MainWindow::on_actionOtw_rz_triggered()
 {
     // Show a file open dialog at QStandardPaths::PicturesLocation.
-    QStringList file = QFileDialog::getOpenFileNames(this, tr("Select Images"),
-                                                     QDesktopServices::storageLocation(QDesktopServices::PicturesLocation),
-                                                     "*.jpg *.png");
-    if(!file.isEmpty())
+	filePath = QFileDialog::getOpenFileName(this, tr("Select Images"), ".","*.jpg *.png");
+	if(!filePath.isEmpty())
     {
-        filePath = file[0];
-        pixmap->load(this->filePath);
+		pixmap->load(this->filePath);
         int x = ui->pic_label->width();
         int y = ui->pic_label->height();
         *pixmap = pixmap->scaled(QSize(x, y), Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
@@ -38,11 +35,7 @@ void MainWindow::on_actionOtw_rz_triggered()
     }
     else
     {
-        filePath = "";
-        QMessageBox *info = new QMessageBox(this);
-        info->setWindowTitle(QString::fromUtf8("Błąd"));
-        info->setText("Nie wczytano pliku");
-        info->show();
+		QMessageBox::critical( this, tr("Błąd"), tr("Nie wczytano pliku") );
     }
 }
 
