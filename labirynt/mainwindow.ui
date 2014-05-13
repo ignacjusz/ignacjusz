@@ -2,6 +2,9 @@
 <ui version="4.0">
  <class>MainWindow</class>
  <widget class="QMainWindow" name="MainWindow">
+  <property name="enabled">
+   <bool>true</bool>
+  </property>
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -117,13 +120,13 @@
      </property>
     </widget>
    </widget>
-   <widget class="QGroupBox" name="groupBox_2">
+   <widget class="QGroupBox" name="alg">
     <property name="geometry">
      <rect>
       <x>10</x>
       <y>130</y>
       <width>191</width>
-      <height>81</height>
+      <height>111</height>
      </rect>
     </property>
     <property name="title">
@@ -158,12 +161,25 @@
       <string>Przeszukiwanie wszerz</string>
      </property>
     </widget>
+    <widget class="QLabel" name="startStopPoints">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>80</y>
+       <width>151</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Start: (x,x), stop: (x,x)</string>
+     </property>
+    </widget>
    </widget>
    <widget class="QGroupBox" name="symSpeed">
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>220</y>
+      <y>250</y>
       <width>191</width>
       <height>71</height>
      </rect>
@@ -211,13 +227,13 @@
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>300</y>
+      <y>330</y>
       <width>191</width>
       <height>71</height>
      </rect>
     </property>
     <property name="title">
-     <string>Obszar kolorowania</string>
+     <string>Wizualizacja</string>
     </property>
     <widget class="QSlider" name="symColorVal">
      <property name="geometry">
@@ -252,6 +268,77 @@
      </property>
      <property name="text">
       <string>zakres kolorowania: 100</string>
+     </property>
+    </widget>
+   </widget>
+   <widget class="QGroupBox" name="paint">
+    <property name="enabled">
+     <bool>true</bool>
+    </property>
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>410</y>
+      <width>191</width>
+      <height>81</height>
+     </rect>
+    </property>
+    <property name="title">
+     <string>Rysowanie</string>
+    </property>
+    <widget class="QRadioButton" name="paintPen">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>30</y>
+       <width>102</width>
+       <height>20</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Pędzel</string>
+     </property>
+     <property name="checked">
+      <bool>true</bool>
+     </property>
+    </widget>
+    <widget class="QRadioButton" name="paintErase">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>50</y>
+       <width>102</width>
+       <height>20</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Gumka</string>
+     </property>
+    </widget>
+    <widget class="QRadioButton" name="paintStart">
+     <property name="geometry">
+      <rect>
+       <x>100</x>
+       <y>30</y>
+       <width>81</width>
+       <height>20</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Początek</string>
+     </property>
+    </widget>
+    <widget class="QRadioButton" name="paintStop">
+     <property name="geometry">
+      <rect>
+       <x>100</x>
+       <y>50</y>
+       <width>71</width>
+       <height>20</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Koniec</string>
      </property>
     </widget>
    </widget>

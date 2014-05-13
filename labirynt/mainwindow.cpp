@@ -1,8 +1,6 @@
 #include "mainwindow.hpp"
 #include "ui_mainwindow.h"
-#include <QDebug>
 #include <cmath>
-#define DE qDebug()
 
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWindow),
 	paintAreaCorner( 210, 10), paintArea( paintAreaCorner.x(), paintAreaCorner.y(), 180, 180 ), zoom(1), imageCenter( 0, 0 ) {
@@ -18,10 +16,10 @@ void MainWindow::paintEvent(QPaintEvent * e) {
 	QPainter painter(this);
 
 	painter.drawRect( paintArea );
-	if( srcImage.isNull() ) {
+	if( alg.printImage().isNull() ) {
 		return;
 	}
-	QImage printImage( srcImage );
+	const QImage & printImage=alg.printImage();
 	//paint queues
 
 	int x=paintArea.width()/realZoom( zoom );
@@ -40,6 +38,21 @@ double MainWindow::realZoom(double zoom) {
 
 double MainWindow::reverseZoom(double realZoom) {
 	return ( std::log10( realZoom ) ) * 10;
+}
+
+void MainWindow::startStopPoints(QPoint start, QPoint stop) {
+	QString text;
+	if( start.x() == -1 ) {
+		text="Start: (x,x), ";
+	} else {
+		text=QString("Start: (%1,%2), ").arg( start.x() ).arg( start.y() );
+	}
+	if( stop.x() == -1 ) {
+		text+="stop: (x,x), ";
+	} else {
+		text+=QString("stop: (%1,%2)").arg( stop.x() ).arg( stop.y() );
+	}
+	ui->startStopPoints->setText( text );
 }
 
 void MainWindow::mousePressEvent(QMouseEvent * e) {
@@ -61,7 +74,6 @@ void MainWindow::mouseReleaseEvent(QMouseEvent * e) {
 			QRect paint( e->pos(), startPaint );
 
 			paint=paint.normalized();
-			DE << "paint=" << paint;
 
 			int x=paintArea.width()/realZoom( zoom );
 			int y=paintArea.height()/realZoom( zoom );
@@ -73,12 +85,19 @@ void MainWindow::mouseReleaseEvent(QMouseEvent * e) {
 			paint.setWidth( paint.width()/realZoom( zoom ) );
 			paint.setHeight( paint.height()/realZoom( zoom ) );
 
-			DE << "transform=" << paint;
+			if( ui->paintStart->isChecked() ) {
+				alg.setStart( QPoint( paint.x()+paint.width(), paint.y()+paint.height() ) );
+				startStopPoints( alg.start(), alg.stop() );
+			} else if( ui->paintStop->isChecked() ) {
+				alg.setStop( QPoint( paint.x()+paint.width(), paint.y()+paint.height() ) );
+				startStopPoints( alg.start(), alg.stop() );
+			}
 
-			QPainter p( & srcImage);
 
-			p.setBrush( QColor( 255, 0, 0 ) );
-			p.drawRect( paint );
+	//		QPainter p( & alg.srcImage_);
+
+	//		p.setBrush( QColor( 255, 0, 0 ) );
+	//		p.drawRect( paint );
 			//TODO: here
 
 		}
@@ -117,8 +136,9 @@ void MainWindow::on_zoomOut_clicked() {
 
 void MainWindow::on_openImage_clicked() {
 	imageName = QFileDialog::getOpenFileName( this, "Wybierz obraz", "." );
-	if( srcImage.load( imageName ) ) {
+	if( alg.loadImage( imageName ) ) {
 		ui->startStop->setEnabled( true );
+		startStopPoints( alg.start(), alg.stop() );
 	} else {
 		imageName="";
 		QMessageBox::critical( this, "Błędny obraz", "Nie potrafię odczytać obrazu");
@@ -128,10 +148,11 @@ void MainWindow::on_openImage_clicked() {
 
 
 void MainWindow::on_zoomNo_clicked() {
-	zoom=reverseZoom( std::max( srcImage.width()/paintArea.width(), srcImage.height()/paintArea.height() )*0.9 );
-	imageCenter.setX( srcImage.width()/2 );
-	imageCenter.setY( srcImage.height()/2 );
+	zoom=reverseZoom( std::min( paintArea.width()/((double)alg.printImage().width()), paintArea.height()/((double)alg.printImage().height()) )*0.99 );
+	imageCenter.setX( alg.printImage().width()/2 );
+	imageCenter.setY( alg.printImage().height()/2 );
 	repaint();
+	DE << zoom;
 }
 
 void MainWindow::on_symSpeedVal_valueChanged(int value) {

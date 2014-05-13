@@ -1,6 +1,7 @@
 #ifndef MAINWINDOW_HPP
 #define MAINWINDOW_HPP
 
+#include "alg.hpp"
 #include <QMainWindow>
 #include <QPainter>
 #include <QRect>
@@ -43,12 +44,14 @@ private:
 	//QPoint paintCenter;
 	QPoint startDrag;
 	QPoint startPaint;
-	QImage srcImage;
 	QString imageName;
 
 	double realZoom( double zoom );
 	double reverseZoom( double realZoom );
 
+	Alg alg;
+
+	void startStopPoints( QPoint start, QPoint stop );
 
 
 	void paintEvent( QPaintEvent *e );
