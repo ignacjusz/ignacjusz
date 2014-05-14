@@ -136,7 +136,7 @@
      <property name="geometry">
       <rect>
        <x>10</x>
-       <y>30</y>
+       <y>50</y>
        <width>171</width>
        <height>20</height>
       </rect>
@@ -145,20 +145,23 @@
       <string>Przeszukiwanie w głąb</string>
      </property>
      <property name="checked">
-      <bool>true</bool>
+      <bool>false</bool>
      </property>
     </widget>
     <widget class="QRadioButton" name="breadthFirst">
      <property name="geometry">
       <rect>
        <x>10</x>
-       <y>50</y>
+       <y>30</y>
        <width>171</width>
        <height>20</height>
       </rect>
      </property>
      <property name="text">
       <string>Przeszukiwanie wszerz</string>
+     </property>
+     <property name="checked">
+      <bool>true</bool>
      </property>
     </widget>
     <widget class="QLabel" name="startPoint">
@@ -425,7 +428,7 @@
       <string>Twórz plik IMG.stats.csv</string>
      </property>
      <property name="checked">
-      <bool>true</bool>
+      <bool>false</bool>
      </property>
     </widget>
    </widget>

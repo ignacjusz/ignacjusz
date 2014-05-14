@@ -124,14 +124,14 @@ bool Alg::step() {
 	for( int i=0; i<4; ++i ) {
 
 		newPoint=workPoint_;
-		if( i==0 ) {//left
-			newPoint.setX( newPoint.x()-1 );
-		} else if( i==1 ) {//up
-			newPoint.setY( newPoint.y()-1 );
-		} else if( i==2 ) {//right
+		if( i==0 ) {//right
 			newPoint.setX( newPoint.x()+1 );
-		} else {//down
+		} else if( i==1 ) {//down
 			newPoint.setY( newPoint.y()+1 );
+		} else if( i==2 ) {//left
+			newPoint.setX( newPoint.x()-1 );
+		} else {//up
+			newPoint.setY( newPoint.y()-1 );
 		}
 
 		if( srcImage_.rect().contains( newPoint) && srcImage_.pixel( newPoint )!=black ) {
