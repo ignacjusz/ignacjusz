@@ -11,6 +11,8 @@
 #include <QMessageBox>
 #include <QTimer>
 #include <QTime>
+#include <QTextStream>
+#include <QFile>
 
 namespace Ui {
 class MainWindow;
@@ -52,6 +54,9 @@ private:
 	QPoint startDrag;
 	QPoint startPaint;
 	QString imageName;
+	QString statsName;
+	QFile statsFile;
+	QTextStream * statsStream;
 
 	QTimer * timer;
 

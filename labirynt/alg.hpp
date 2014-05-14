@@ -28,13 +28,17 @@ public:
 	const QImage & printImage();
 
 	bool step();
-	void paint();
-	void paintAns();
+	int paint();
+	int paintAns();
 
 	void setColorLength( int x );
 	void setWorkMode( WorkMode workMode );
 
 	static QRgb ScaleColorPercent(double t );
+
+	QPoint workPoint();
+	int currentPointNum();
+	int queueLength();
 
 protected:
 	QPoint start_;

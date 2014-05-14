@@ -151,35 +151,39 @@ bool Alg::step() {
 	return true;
 }
 
-void Alg::paint() {
+int Alg::paint() {
+	int n=0;
 	printImage_=srcImage_;
 	QRgb path=QColor( 0,255,255 ).rgb();
 	QPoint printPoint=workPoint_;
 	while( parent_( printPoint ).p.x()!=-1 && parent_( printPoint ).p.x()!=-2 ) {
 		printImage_.setPixel( printPoint, path );
 		printPoint=parent_( printPoint ).p;
+		++n;
 	}
 	int len=std::min( colorLength_, queue_.size() );
 	for( int i=1; i<len; ++i ) {
 		printImage_.setPixel( queue_[i], ScaleColorPercent( 100-100.0*i/len ) );
 	}
+	return n;
 }
 
-void Alg::paintAns() {
+int Alg::paintAns() {
+	int n=0;
 	printImage_=srcImage_;
 	QRgb path=QColor( 255,0,255 ).rgb();
 	QPoint printPoint=stop_;
 	while( parent_( printPoint ).p.x()!=-1 && parent_( printPoint ).p.x()!=-2 ) {
 		printPoint=parent_( printPoint ).p;
-		if( parent_( printPoint ).p.x()!=-2 ) {
-			printImage_.setPixel( printPoint, path );
-		}
+		printImage_.setPixel( printPoint, path );
+		++n;
 	}
 
 	QRgb red=QColor( 255,0,0 ).rgb();
 	QRgb green=QColor( 0,255,0 ).rgb();
 	printImage_.setPixel( start_, green );
 	printImage_.setPixel( stop_, red );
+	return n;
 }
 
 void Alg::setColorLength(int x) {
@@ -227,6 +231,18 @@ QRgb Alg::ScaleColorPercent(double t) {
 	  b=0;
 	}
 	return QColor( r, g, b ).rgb();
+}
+
+QPoint Alg::workPoint() {
+	return workPoint_;
+}
+
+int Alg::currentPointNum() {
+	return currentPointNum_;
+}
+
+int Alg::queueLength() {
+	return queue_.length();
 }
 
 MyPoint & Alg::parent_(int x, int y) {

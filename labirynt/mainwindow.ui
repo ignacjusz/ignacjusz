@@ -380,19 +380,6 @@
     <property name="title">
      <string>Statystyki</string>
     </property>
-    <widget class="QPushButton" name="statsDir">
-     <property name="geometry">
-      <rect>
-       <x>10</x>
-       <y>30</y>
-       <width>171</width>
-       <height>22</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>Wybierz katalog statystyk</string>
-     </property>
-    </widget>
     <widget class="QProgressBar" name="statsCpu">
      <property name="geometry">
       <rect>
@@ -423,6 +410,22 @@
      </property>
      <property name="text">
       <string>Krok: 0 ms</string>
+     </property>
+    </widget>
+    <widget class="QCheckBox" name="statsMake">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>30</y>
+       <width>171</width>
+       <height>20</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Twórz plik IMG.stats.csv</string>
+     </property>
+     <property name="checked">
+      <bool>true</bool>
      </property>
     </widget>
    </widget>

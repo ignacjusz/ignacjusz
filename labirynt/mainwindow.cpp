@@ -153,6 +153,9 @@ void MainWindow::on_openImage_clicked() {
 		QMessageBox::critical( this, "Błędny obraz", "Nie potrafię odczytać obrazu");
 	}
 	on_zoomNo_clicked();
+	QTime time;
+	statsName=imageName + QTime::currentTime().toString( ".HH:mm:ss" ) + ".stats.csv";
+	statsFile.setFileName( statsName );
 }
 
 
@@ -176,7 +179,7 @@ void MainWindow::on_symSpeedVal_valueChanged(int value) {
 		timer->stop();
 		timer->start( stepTimeMsec );
 	}
-	ui->symSpeedText->setText( QString("operacji/sekundę: %1").arg( pow(10,value/10.0), 0, 'f', 1 ) );
+	ui->symSpeedText->setText( QString("operacji/sek.: %1").arg( pow(10,value/10.0), 0, 'f', 1 ) );
 }
 
 void MainWindow::on_symColorVal_valueChanged(int value) {
@@ -197,9 +200,15 @@ void MainWindow::nextStep() {
 			repaint();
 			return;
 		}
+		if( statsStream!=Q_NULLPTR ) {
+			(*statsStream) << '\n' << alg.currentPointNum() << ',' << alg.queueLength() << ',' << alg.workPoint().x() << ',' << alg.workPoint().y();
+		}
 	}
 	if( ! ui->symDisableScreen->isChecked() ) {
-		alg.paint();
+		int n=alg.paint();
+		if( statsStream!=Q_NULLPTR ) {
+			(*statsStream) << ',' << n;
+		}
 		repaint();
 	}
 	int v=t.elapsed();
@@ -214,6 +223,15 @@ void MainWindow::on_startStop_clicked() {
 		ui->openImage->setDisabled( true );
 		ui->alg->setDisabled( true );
 		ui->paint->setDisabled( true );
+		ui->statsMake->setDisabled( true );
+
+		if( ui->statsMake->isChecked() ) {
+			statsFile.open( QIODevice::WriteOnly | QIODevice::Text );
+			statsStream = new QTextStream( & statsFile );
+			(*statsStream) << "krok,kolejka,x,y,sciezka";
+		} else {
+			statsStream=Q_NULLPTR;
+		}
 
 		if( ui->depthFirst->isChecked() ) {
 			alg.setWorkMode( alg.DepthFirst );
@@ -239,6 +257,13 @@ void MainWindow::on_startStop_clicked() {
 		ui->openImage->setDisabled( false );
 		ui->alg->setDisabled( false );
 		ui->paint->setDisabled( false );
+		ui->statsMake->setDisabled( false );
+
+		if( statsStream!=Q_NULLPTR ) {
+			delete statsStream;
+			statsFile.close();
+			statsStream=Q_NULLPTR;
+		}
 
 		timer->stop();
 
