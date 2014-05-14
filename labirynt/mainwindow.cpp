@@ -6,13 +6,20 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
 	paintAreaCorner( 210, 10), paintArea( paintAreaCorner.x(), paintAreaCorner.y(), 180, 180 ), zoom(1), imageCenter( 0, 0 ) {
 
 	ui->setupUi(this);
+
+	timer = new QTimer( this );
+	connect( timer, SIGNAL( timeout() ), this, SLOT( nextStep() ) );
 }
 
 MainWindow::~MainWindow() {
 	delete ui;
+	delete timer;
 }
 
 void MainWindow::paintEvent(QPaintEvent * e) {
+	if( e==Q_NULLPTR ) {
+		;//NOOP
+	}
 	QPainter painter(this);
 
 	painter.drawRect( paintArea );
@@ -156,10 +163,70 @@ void MainWindow::on_zoomNo_clicked() {
 }
 
 void MainWindow::on_symSpeedVal_valueChanged(int value) {
+	stepTimeMsec=1000/pow(10,value/10.0);
+	if( stepTimeMsec < 33 ) {
+		stepMul=33/stepTimeMsec;
+		stepTimeMsec=33;
+	} else {
+		stepMul=1;
+	}
+	if( timer->isActive() ) {
+		timer->stop();
+		timer->start( stepTimeMsec );
+	}
 	ui->symSpeedText->setText( QString("operacji/sekundę: %1").arg( pow(10,value/10.0), 0, 'f', 1 ) );
 }
 
 void MainWindow::on_symColorVal_valueChanged(int value) {
+	alg.setColorLength( pow(10, value/10.0) );
 	ui->symColorText->setText( QString("zakres kolorowania: %1").arg( pow(10,value/10.0), 0, 'f', 0 ) );
 	repaint();
+}
+
+void MainWindow::nextStep() {
+	for( int i=0; i<stepMul; ++i ) {
+		if( alg.step() == false ) {
+			on_startStop_clicked();//koniec pracy, auto-stop
+			DE << stepTimeMsec << stepMul;
+			break;
+		}
+	}
+	alg.paint();
+	repaint();
+}
+
+void MainWindow::on_startStop_clicked() {
+	if( ui->startStop->text() == "Start" ) {
+		ui->startStop->setText( "Stop" );
+		ui->openImage->setDisabled( true );
+		ui->alg->setDisabled( true );
+		ui->paint->setDisabled( true );
+
+		if( ui->depthFirst->isChecked() ) {
+			alg.setWorkMode( alg.DepthFirst );
+		} else {
+			alg.setWorkMode( alg.BreadthFirst );
+		}
+
+		alg.setColorLength( pow( 10, ui->symColorVal->value()/10.0 ) );
+		stepTimeMsec=1000/pow( 10, ui->symSpeedVal->value()/10.0 );
+
+		if( stepTimeMsec < 33 ) {
+			stepMul=33/stepTimeMsec;
+			stepTimeMsec=33;
+		} else {
+			stepMul=1;
+		}
+
+		timer->start( stepTimeMsec );
+
+	} else {
+		ui->startStop->setText( "Start" );
+		ui->openImage->setDisabled( false );
+		ui->alg->setDisabled( false );
+		ui->paint->setDisabled( false );
+
+		timer->stop();
+
+	}
 }

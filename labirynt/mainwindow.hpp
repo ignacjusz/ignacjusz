@@ -9,6 +9,7 @@
 #include <QImage>
 #include <QFileDialog>
 #include <QMessageBox>
+#include <QTimer>
 
 namespace Ui {
 class MainWindow;
@@ -35,6 +36,11 @@ private slots:
 
 	void on_symColorVal_valueChanged(int value);
 
+	void on_startStop_clicked();
+
+public slots:
+	void nextStep();
+
 private:
 	Ui::MainWindow *ui;
 	const QPoint paintAreaCorner;
@@ -46,6 +52,8 @@ private:
 	QPoint startPaint;
 	QString imageName;
 
+	QTimer * timer;
+
 	double realZoom( double zoom );
 	double reverseZoom( double realZoom );
 
@@ -53,6 +61,8 @@ private:
 
 	void startStopPoints( QPoint start, QPoint stop );
 
+	int stepTimeMsec;
+	int stepMul;
 
 	void paintEvent( QPaintEvent *e );
 	void mousePressEvent( QMouseEvent *e );
