@@ -112,6 +112,7 @@ bool Alg::step() {
 		return false;
 	}
 	QRgb black=QColor( 0,0,0 ).rgb();
+	QRgb yellow=QColor( 255,255,55 ).rgb();
 
 	workPoint_=queueNext_();
 	QPoint newPoint;
@@ -142,6 +143,7 @@ bool Alg::step() {
 			}
 		}
 	}
+	srcImage_.setPixel( workPoint_, yellow );
 	return true;
 }
 

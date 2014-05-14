@@ -27,7 +27,7 @@
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>10</y>
+      <y>0</y>
       <width>191</width>
       <height>121</height>
      </rect>
@@ -161,17 +161,30 @@
       <string>Przeszukiwanie wszerz</string>
      </property>
     </widget>
-    <widget class="QLabel" name="startStopPoints">
+    <widget class="QLabel" name="startPoint">
      <property name="geometry">
       <rect>
        <x>10</x>
-       <y>80</y>
+       <y>70</y>
        <width>151</width>
        <height>16</height>
       </rect>
      </property>
      <property name="text">
-      <string>Start: (x,x), stop: (x,x)</string>
+      <string>Start: (x,x)</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="stopPoint">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>90</y>
+       <width>171</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Stop: (x,x)</string>
      </property>
     </widget>
    </widget>
@@ -179,7 +192,7 @@
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>250</y>
+      <y>350</y>
       <width>191</width>
       <height>71</height>
      </rect>
@@ -200,7 +213,7 @@
       <number>-10</number>
      </property>
      <property name="maximum">
-      <number>50</number>
+      <number>60</number>
      </property>
      <property name="value">
       <number>-10</number>
@@ -219,7 +232,7 @@
       </rect>
      </property>
      <property name="text">
-      <string>operacji/sekundę: 0.1</string>
+      <string>operacji/sek.: 0.1</string>
      </property>
     </widget>
    </widget>
@@ -227,7 +240,7 @@
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>330</y>
+      <y>430</y>
       <width>191</width>
       <height>71</height>
      </rect>
@@ -248,7 +261,7 @@
       <number>0</number>
      </property>
      <property name="maximum">
-      <number>50</number>
+      <number>60</number>
      </property>
      <property name="value">
       <number>20</number>
@@ -267,7 +280,7 @@
       </rect>
      </property>
      <property name="text">
-      <string>zakres kolorowania: 100</string>
+      <string>zakres koloru: 100</string>
      </property>
     </widget>
    </widget>
@@ -278,7 +291,7 @@
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>410</y>
+      <y>510</y>
       <width>191</width>
       <height>81</height>
      </rect>
@@ -339,6 +352,64 @@
      </property>
      <property name="text">
       <string>Koniec</string>
+     </property>
+    </widget>
+   </widget>
+   <widget class="QGroupBox" name="stats">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>250</y>
+      <width>191</width>
+      <height>91</height>
+     </rect>
+    </property>
+    <property name="title">
+     <string>Statystyki</string>
+    </property>
+    <widget class="QPushButton" name="statsDir">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>30</y>
+       <width>171</width>
+       <height>22</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Wybierz katalog statystyk</string>
+     </property>
+    </widget>
+    <widget class="QProgressBar" name="statsCpu">
+     <property name="geometry">
+      <rect>
+       <x>100</x>
+       <y>60</y>
+       <width>81</width>
+       <height>23</height>
+      </rect>
+     </property>
+     <property name="maximum">
+      <number>100</number>
+     </property>
+     <property name="value">
+      <number>0</number>
+     </property>
+     <property name="format">
+      <string>cpu: %p%</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="statsStep">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>60</y>
+       <width>81</width>
+       <height>21</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Krok: 0 ms</string>
      </property>
     </widget>
    </widget>

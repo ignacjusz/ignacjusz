@@ -37,6 +37,7 @@ void MainWindow::paintEvent(QPaintEvent * e) {
 	painter.drawImage( paintArea, printImage, cutRect );
 
 	//DE << "paintarea=" << paintArea << "imgctr=" << imageCenter << "cutrect=" << cutRect;
+	//DE << QTime::currentTime();
 }
 
 double MainWindow::realZoom(double zoom) {
@@ -48,18 +49,19 @@ double MainWindow::reverseZoom(double realZoom) {
 }
 
 void MainWindow::startStopPoints(QPoint start, QPoint stop) {
-	QString text;
+	QString textStart, textStop;
 	if( start.x() == -1 ) {
-		text="Start: (x,x), ";
+		textStart="Start: (x,x)";
 	} else {
-		text=QString("Start: (%1,%2), ").arg( start.x() ).arg( start.y() );
+		textStart=QString("Start: (%1,%2)").arg( start.x() ).arg( start.y() );
 	}
 	if( stop.x() == -1 ) {
-		text+="stop: (x,x), ";
+		textStop="Stop: (x,x)";
 	} else {
-		text+=QString("stop: (%1,%2)").arg( stop.x() ).arg( stop.y() );
+		textStop=QString("Stop: (%1,%2)").arg( stop.x() ).arg( stop.y() );
 	}
-	ui->startStopPoints->setText( text );
+	ui->startPoint->setText( textStart );
+	ui->stopPoint->setText( textStop );
 }
 
 void MainWindow::mousePressEvent(QMouseEvent * e) {
@@ -184,6 +186,8 @@ void MainWindow::on_symColorVal_valueChanged(int value) {
 }
 
 void MainWindow::nextStep() {
+	QTime t;
+	t.start();
 	for( int i=0; i<stepMul; ++i ) {
 		if( alg.step() == false ) {
 			on_startStop_clicked();//koniec pracy, auto-stop
@@ -195,6 +199,9 @@ void MainWindow::nextStep() {
 	}
 	alg.paint();
 	repaint();
+	int v=t.elapsed();
+	ui->statsCpu->setValue( 100*v/stepTimeMsec );
+	ui->statsStep->setText(	QString("Krok: %1 ms").arg( v ) );
 }
 
 void MainWindow::on_startStop_clicked() {
