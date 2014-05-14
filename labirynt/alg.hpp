@@ -34,7 +34,7 @@ public:
 	void setColorLength( int x );
 	void setWorkMode( WorkMode workMode );
 
-	static QRgb ScaleColorPercent( double val );
+	static QRgb ScaleColorPercent(double t );
 
 protected:
 	QPoint start_;
@@ -48,6 +48,8 @@ protected:
 	QImage printImage_;
 	static const int TRSHLD=5;
 	static const int CLRMX=255;
+	int whitePointsNum_;
+	int currentPointNum_;
 
 	QVector< MyPoint> parents_;
 	MyPoint & parent_( int x, int y);

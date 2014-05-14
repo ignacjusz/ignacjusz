@@ -193,12 +193,15 @@ void MainWindow::nextStep() {
 			on_startStop_clicked();//koniec pracy, auto-stop
 			DE << stepTimeMsec << stepMul;
 			alg.paintAns();
+			ui->symDisableScreen->setChecked( false );
 			repaint();
 			return;
 		}
 	}
-	alg.paint();
-	repaint();
+	if( ! ui->symDisableScreen->isChecked() ) {
+		alg.paint();
+		repaint();
+	}
 	int v=t.elapsed();
 	ui->statsCpu->setValue( 100*v/stepTimeMsec );
 	ui->statsStep->setText(	QString("Krok: %1 ms").arg( v ) );
@@ -207,6 +210,7 @@ void MainWindow::nextStep() {
 void MainWindow::on_startStop_clicked() {
 	if( ui->startStop->text() == "Start" ) {
 		ui->startStop->setText( "Stop" );
+		setWindowTitle( "Labirynt (szukam...)" );
 		ui->openImage->setDisabled( true );
 		ui->alg->setDisabled( true );
 		ui->paint->setDisabled( true );
@@ -231,6 +235,7 @@ void MainWindow::on_startStop_clicked() {
 
 	} else {
 		ui->startStop->setText( "Start" );
+		setWindowTitle( "Labirynt" );
 		ui->openImage->setDisabled( false );
 		ui->alg->setDisabled( false );
 		ui->paint->setDisabled( false );
