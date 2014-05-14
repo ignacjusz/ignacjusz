@@ -33,11 +33,11 @@ bool Alg::loadImage( const QString & imageName )
 				srcImage_.setPixel( x, y, black );
 			} else {
 				if( qRed( pix )>CLRMX-TRSHLD && qGreen( pix )<TRSHLD && qBlue( pix )<TRSHLD ) {
-					start_.setX( x );
-					start_.setY( y );
-				} else if( qRed( pix )<TRSHLD && qGreen( pix )>CLRMX-TRSHLD && qBlue( pix )<TRSHLD ) {
 					stop_.setX( x );
 					stop_.setY( y );
+				} else if( qRed( pix )<TRSHLD && qGreen( pix )>CLRMX-TRSHLD && qBlue( pix )<TRSHLD ) {
+					start_.setX( x );
+					start_.setY( y );
 				}
 				srcImage_.setPixel( x, y, white );
 			}
@@ -49,14 +49,14 @@ bool Alg::loadImage( const QString & imageName )
 
 	parents_.fill( errP, srcImage_.width()*srcImage_.height() );
 	if( start_.x() != -1 ) {
-		srcImage_.setPixel( start_, red );
+		srcImage_.setPixel( start_, green );
 		queue_.append( start_ );
 		parent_( start_ ).v=0;
 		parent_( start_ ).p.setX(-2);
 		workPoint_=start_;
 	}
 	if( stop_.x() != -1 ) {
-		srcImage_.setPixel( stop_, green );
+		srcImage_.setPixel( stop_, red );
 	}
 	paint();
 
@@ -130,22 +130,22 @@ bool Alg::step() {
 		}
 
 		if( srcImage_.rect().contains( newPoint) && srcImage_.pixel( newPoint )!=black ) {
-			DE << "px" << srcImage_.pixel( newPoint );
 			if( parent_( newPoint ).p.x()==-1 ) { //nie odwiedzany nigdy
 				parent_( newPoint ).p=workPoint_;
 				parent_( newPoint ).v=parent_( workPoint_ ).v+1;
 				queueAdd_( newPoint );
 			} else {
-
-				//porównaj ścieżki
-
+				if( parent_( newPoint ).v > parent_( workPoint_ ).v+1 ) {
+					parent_( newPoint ).p=workPoint_;
+					parent_( newPoint ).v=parent_( workPoint_ ).v+1;
+				}
 			}
 		}
 	}
 	return true;
 }
 
-void Alg::paint() {//TODO:
+void Alg::paint() {
 	printImage_=srcImage_;
 	QRgb path=QColor( 0,255,255 ).rgb();
 	QPoint printPoint=workPoint_;
@@ -157,7 +157,18 @@ void Alg::paint() {//TODO:
 	for( int i=1; i<len; ++i ) {
 		printImage_.setPixel( queue_[i], ScaleColorPercent( 100.0*i/len ) );
 	}
+}
 
+void Alg::paintAns() {
+	printImage_=srcImage_;
+	QRgb path=QColor( 255,0,255 ).rgb();
+	QPoint printPoint=stop_;
+	while( parent_( printPoint ).p.x()!=-1 && parent_( printPoint ).p.x()!=-2 ) {
+		printPoint=parent_( printPoint ).p;
+		if( parent_( printPoint ).p.x()!=-2 ) {
+			printImage_.setPixel( printPoint, path );
+		}
+	}
 }
 
 void Alg::setColorLength(int x) {
@@ -169,7 +180,7 @@ void Alg::setWorkMode(Alg::WorkMode workMode) {
 }
 
 QRgb Alg::ScaleColorPercent(double val) {
-	int t=100-val;
+	int t=(100-val)/2+50;
 	int r,g,b;
 	if( t < 0 ) {
 	  r=0;
@@ -222,7 +233,6 @@ QPoint Alg::queueNext_() {
 }
 
 void Alg::queueAdd_(QPoint x) {
-	DE << "add" << x;
 	if( workMode_==DepthFirst ) {
 		queue_.prepend( x );
 	} else {

@@ -29,6 +29,7 @@ public:
 
 	bool step();
 	void paint();
+	void paintAns();
 
 	void setColorLength( int x );
 	void setWorkMode( WorkMode workMode );

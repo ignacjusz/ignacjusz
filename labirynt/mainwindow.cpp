@@ -188,7 +188,9 @@ void MainWindow::nextStep() {
 		if( alg.step() == false ) {
 			on_startStop_clicked();//koniec pracy, auto-stop
 			DE << stepTimeMsec << stepMul;
-			break;
+			alg.paintAns();
+			repaint();
+			return;
 		}
 	}
 	alg.paint();

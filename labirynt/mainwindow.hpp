@@ -61,8 +61,8 @@ private:
 
 	void startStopPoints( QPoint start, QPoint stop );
 
-	int stepTimeMsec;
-	int stepMul;
+	double stepTimeMsec;
+	double stepMul;
 
 	void paintEvent( QPaintEvent *e );
 	void mousePressEvent( QMouseEvent *e );
