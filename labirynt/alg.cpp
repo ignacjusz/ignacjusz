@@ -256,7 +256,7 @@ int Alg::currentPointNum() {
 }
 
 int Alg::queueLength() {
-	return queue_.length();
+	return queue_.size();
 }
 
 MyPoint & Alg::parent_(int x, int y) {
