@@ -44,6 +44,8 @@ private slots:
 
 	void on_symColorVisited_stateChanged(int arg1);
 
+	void on_saveImage_clicked();
+
 public slots:
 	void nextStep();
 

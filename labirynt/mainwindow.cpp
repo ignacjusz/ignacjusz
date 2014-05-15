@@ -35,9 +35,6 @@ void MainWindow::paintEvent(QPaintEvent * e) {
 	QRect cutRect( imageCenter.x()-x/2, imageCenter.y()-y/2, x, y );
 
 	painter.drawImage( paintArea, printImage, cutRect );
-
-	//DE << "paintarea=" << paintArea << "imgctr=" << imageCenter << "cutrect=" << cutRect;
-	//DE << QTime::currentTime();
 }
 
 double MainWindow::realZoom(double zoom) {
@@ -93,21 +90,6 @@ void MainWindow::mouseReleaseEvent(QMouseEvent * e) {
 
 			paint.setWidth( paint.width()/realZoom( zoom ) );
 			paint.setHeight( paint.height()/realZoom( zoom ) );
-
-			if( ui->paintStart->isChecked() ) {
-				alg.setStart( QPoint( paint.x()+paint.width(), paint.y()+paint.height() ) );
-				startStopPoints( alg.start(), alg.stop() );
-			} else if( ui->paintStop->isChecked() ) {
-				alg.setStop( QPoint( paint.x()+paint.width(), paint.y()+paint.height() ) );
-				startStopPoints( alg.start(), alg.stop() );
-			}
-
-
-	//		QPainter p( & alg.srcImage_);
-
-	//		p.setBrush( QColor( 255, 0, 0 ) );
-	//		p.drawRect( paint );
-			//TODO: here
 
 		}
 		repaint();
@@ -225,7 +207,6 @@ void MainWindow::on_startStop_clicked() {
 		setWindowTitle( windowTitle + " (szukam...)" );
 		ui->openImage->setDisabled( true );
 		ui->alg->setDisabled( true );
-		ui->paint->setDisabled( true );
 		ui->statsMake->setDisabled( true );
 
 		if( ui->statsMake->isChecked() ) {
@@ -259,7 +240,6 @@ void MainWindow::on_startStop_clicked() {
 		setWindowTitle( windowTitle );
 		ui->openImage->setDisabled( false );
 		ui->alg->setDisabled( false );
-		ui->paint->setDisabled( false );
 		ui->statsMake->setDisabled( false );
 
 		if( statsStream!=Q_NULLPTR ) {
@@ -280,4 +260,11 @@ void MainWindow::on_symColorVisited_stateChanged(int arg1) {
 		alg.paint( arg1 == Qt::Checked );
 	}
 	repaint();
+}
+
+void MainWindow::on_saveImage_clicked() {
+	QString nazwa = QFileDialog::getSaveFileName(this,"Nazwa Pliku",".","Obraz PNG (*.png *.PNG)");
+	if( ! nazwa.isEmpty() ) {
+		alg.printImage().save( nazwa, "PNG" );
+	}
 }

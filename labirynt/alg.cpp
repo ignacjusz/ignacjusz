@@ -75,10 +75,11 @@ void Alg::setStart(QPoint newStart) {
 		}
 
 		start_=newStart;
-		QRgb red=QColor( 255,0,0 ).rgb();
-		srcColorImage_.setPixel( start_, red );
+		QRgb green=QColor( 0,255,0 ).rgb();
+		srcColorImage_.setPixel( start_, green );
 		workPoint_=start_;
 	}
+	srcMonoImage_=srcColorImage_;
 	paint(false);
 }
 
@@ -91,9 +92,10 @@ void Alg::setStop(QPoint newStop) {
 		}
 
 		stop_=newStop;
-		QRgb green=QColor( 0,255,0 ).rgb();
-		srcColorImage_.setPixel( stop_, green );
+		QRgb red=QColor( 255,0,0 ).rgb();
+		srcColorImage_.setPixel( stop_, red );
 	}
+	srcMonoImage_=srcColorImage_;
 	paint(false);
 }
 
@@ -169,7 +171,7 @@ int Alg::paint(bool colorBackground) {
 		++n;
 	}
 	int len=std::min( colorLength_, queue_.size() );
-	for( int i=1; i<len; ++i ) {
+	for( int i=0; i<len; ++i ) {
 		printImage_.setPixel( queue_[i], ScaleColorPercent( 100-100.0*i/len ) );
 	}
 	return n;
