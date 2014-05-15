@@ -13,6 +13,7 @@
 #include <QTime>
 #include <QTextStream>
 #include <QFile>
+#include <QFileInfo>
 
 namespace Ui {
 class MainWindow;
@@ -41,6 +42,8 @@ private slots:
 
 	void on_startStop_clicked();
 
+	void on_symColorVisited_stateChanged(int arg1);
+
 public slots:
 	void nextStep();
 
@@ -56,6 +59,7 @@ private:
 	QString imageName;
 	QString statsName;
 	QFile statsFile;
+	QString windowTitle;
 	QTextStream * statsStream;
 
 	QTimer * timer;

@@ -19,20 +19,20 @@ void Alg::clear() {
 bool Alg::loadImage( const QString & imageName )
 {
 	clear();
-	if( ! srcImage_.load( imageName ) ) {
+	if( ! srcColorImage_.load( imageName ) ) {
 		return false;
 	}
-	srcImage_=srcImage_.convertToFormat( QImage::Format_RGB32 );
+	srcColorImage_=srcColorImage_.convertToFormat( QImage::Format_RGB32 );
 	QRgb black=QColor( 0,0,0 ).rgb();
 	QRgb white=QColor( 255,255,255 ).rgb();
 	QRgb red=QColor( 255,0,0 ).rgb();
 	QRgb green=QColor( 0,255,0 ).rgb();
-	for( int x=0; x<srcImage_.width(); ++x ) {
-		for( int y=0; y<srcImage_.height(); ++y ) {
+	for( int x=0; x<srcColorImage_.width(); ++x ) {
+		for( int y=0; y<srcColorImage_.height(); ++y ) {
 
-			QRgb pix=srcImage_.pixel( x, y );
+			QRgb pix=srcColorImage_.pixel( x, y );
 			if( qRed( pix )<TRSHLD && qGreen( pix )<TRSHLD && qBlue( pix )<TRSHLD ) {//Black
-				srcImage_.setPixel( x, y, black );
+				srcColorImage_.setPixel( x, y, black );
 			} else {
 				if( qRed( pix )>CLRMX-TRSHLD && qGreen( pix )<TRSHLD && qBlue( pix )<TRSHLD ) {
 					stop_.setX( x );
@@ -41,7 +41,7 @@ bool Alg::loadImage( const QString & imageName )
 					start_.setX( x );
 					start_.setY( y );
 				}
-				srcImage_.setPixel( x, y, white );
+				srcColorImage_.setPixel( x, y, white );
 				++whitePointsNum_;
 			}
 		}
@@ -50,51 +50,51 @@ bool Alg::loadImage( const QString & imageName )
 	errP.p.setX( -1 );
 	errP.p.setY( -1 );
 
-	parents_.fill( errP, srcImage_.width()*srcImage_.height() );
+	parents_.fill( errP, srcColorImage_.width()*srcColorImage_.height() );
 	if( start_.x() != -1 ) {
-		srcImage_.setPixel( start_, green );
+		srcColorImage_.setPixel( start_, green );
 		queue_.append( start_ );
 		parent_( start_ ).v=0;
 		parent_( start_ ).p.setX(-2);
 		workPoint_=start_;
 	}
 	if( stop_.x() != -1 ) {
-		srcImage_.setPixel( stop_, red );
+		srcColorImage_.setPixel( stop_, red );
 	}
-	paint();
 
-
+	srcMonoImage_=srcColorImage_;
+	paint(false);
 	return true;
 }
 
 void Alg::setStart(QPoint newStart) {
-	if( srcImage_.rect().contains( newStart ) && newStart!=stop_ ) {
+	if( srcColorImage_.rect().contains( newStart ) && newStart!=stop_ ) {
 		if( start_.x() != -1 ) {
 			QRgb white=QColor( 255,255,255 ).rgb();
-			srcImage_.setPixel( start_, white );
+			srcColorImage_.setPixel( start_, white );
 		}
 
 		start_=newStart;
 		QRgb red=QColor( 255,0,0 ).rgb();
-		srcImage_.setPixel( start_, red );
+		srcColorImage_.setPixel( start_, red );
 		workPoint_=start_;
 	}
-	paint();
+	paint(false);
 }
 
 void Alg::setStop(QPoint newStop) {
-	if( srcImage_.rect().contains( newStop ) && newStop!=start_ ) {
+	if( srcColorImage_.rect().contains( newStop ) && newStop!=start_ ) {
 
 		if( stop_.x() != -1 ) {
 			QRgb white=QColor( 255,255,255 ).rgb();
-			srcImage_.setPixel( stop_, white );
+			srcColorImage_.setPixel( stop_, white );
 		}
 
 		stop_=newStop;
 		QRgb green=QColor( 0,255,0 ).rgb();
-		srcImage_.setPixel( stop_, green );
+		srcColorImage_.setPixel( stop_, green );
 	}
-	paint();
+	paint(false);
 }
 
 QPoint Alg::start() {
@@ -134,7 +134,7 @@ bool Alg::step() {
 			newPoint.setY( newPoint.y()-1 );
 		}
 
-		if( srcImage_.rect().contains( newPoint) && srcImage_.pixel( newPoint )!=black ) {
+		if( srcColorImage_.rect().contains( newPoint) && srcColorImage_.pixel( newPoint )!=black ) {
 			if( parent_( newPoint ).p.x()==-1 ) { //nie odwiedzany nigdy
 				parent_( newPoint ).p=workPoint_;
 				parent_( newPoint ).v=parent_( workPoint_ ).v+1;
@@ -147,13 +147,20 @@ bool Alg::step() {
 			}
 		}
 	}
-	srcImage_.setPixel( workPoint_, yellow );
+	srcColorImage_.setPixel( workPoint_, yellow );
 	return true;
 }
 
-int Alg::paint() {
+int Alg::paint(bool colorBackground) {
+	if( srcMonoImage_.isNull() ) {
+		return -1;
+	}
 	int n=0;
-	printImage_=srcImage_;
+	if( colorBackground ) {
+		printImage_=srcColorImage_;
+	} else {
+		printImage_=srcMonoImage_;
+	}
 	QRgb path=QColor( 0,255,255 ).rgb();
 	QPoint printPoint=workPoint_;
 	while( parent_( printPoint ).p.x()!=-1 && parent_( printPoint ).p.x()!=-2 ) {
@@ -168,9 +175,16 @@ int Alg::paint() {
 	return n;
 }
 
-int Alg::paintAns() {
+int Alg::paintAns(bool colorBackground) {
+	if( srcMonoImage_.isNull() ) {
+		return -1;
+	}
 	int n=0;
-	printImage_=srcImage_;
+	if( colorBackground ) {
+		printImage_=srcColorImage_;
+	} else {
+		printImage_=srcMonoImage_;
+	}
 	QRgb path=QColor( 255,0,255 ).rgb();
 	QPoint printPoint=stop_;
 	while( parent_( printPoint ).p.x()!=-1 && parent_( printPoint ).p.x()!=-2 ) {
@@ -246,11 +260,11 @@ int Alg::queueLength() {
 }
 
 MyPoint & Alg::parent_(int x, int y) {
-	return parents_[ x*srcImage_.height()+y ];
+	return parents_[ x*srcColorImage_.height()+y ];
 }
 
 MyPoint &Alg::parent_(const QPoint p) {
-	return parents_[ p.x()*srcImage_.height()+p.y() ];
+	return parents_[ p.x()*srcColorImage_.height()+p.y() ];
 }
 
 QPoint Alg::queueNext_() {

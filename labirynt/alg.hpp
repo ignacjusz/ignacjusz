@@ -28,8 +28,8 @@ public:
 	const QImage & printImage();
 
 	bool step();
-	int paint();
-	int paintAns();
+	int paint( bool colorBackground );
+	int paintAns( bool colorBackground );
 
 	void setColorLength( int x );
 	void setWorkMode( WorkMode workMode );
@@ -48,7 +48,8 @@ protected:
 
 	WorkMode workMode_;
 
-	QImage srcImage_;
+	QImage srcColorImage_;
+	QImage srcMonoImage_;
 	QImage printImage_;
 	static const int TRSHLD=5;
 	static const int CLRMX=255;

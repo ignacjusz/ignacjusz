@@ -155,6 +155,9 @@ void MainWindow::on_openImage_clicked() {
 	on_zoomNo_clicked();
 	QTime time;
 	statsName=imageName + QTime::currentTime().toString( ".HH:mm:ss" ) + ".stats.csv";
+	QFileInfo fi( imageName );
+	windowTitle="Labirynt: " +  fi.fileName();
+	setWindowTitle( windowTitle );
 	statsFile.setFileName( statsName );
 }
 
@@ -184,7 +187,7 @@ void MainWindow::on_symSpeedVal_valueChanged(int value) {
 
 void MainWindow::on_symColorVal_valueChanged(int value) {
 	alg.setColorLength( pow(10, value/10.0) );
-	ui->symColorText->setText( QString("zakres kolorowania: %1").arg( pow(10,value/10.0), 0, 'f', 0 ) );
+	ui->symColorText->setText( QString("zakres kolejki: %1").arg( pow(10,value/10.0), 0, 'f', 0 ) );
 	repaint();
 }
 
@@ -195,7 +198,7 @@ void MainWindow::nextStep() {
 		if( alg.step() == false ) {
 			on_startStop_clicked();//koniec pracy, auto-stop
 			DE << stepTimeMsec << stepMul;
-			alg.paintAns();
+			alg.paintAns( ui->symColorVisited->isChecked() );
 			ui->symDisableScreen->setChecked( false );
 			repaint();
 			return;
@@ -205,7 +208,7 @@ void MainWindow::nextStep() {
 		}
 	}
 	if( ! ui->symDisableScreen->isChecked() ) {
-		int n=alg.paint();
+		int n=alg.paint( ui->symColorVisited->isChecked() );
 		if( statsStream!=Q_NULLPTR ) {
 			(*statsStream) << ',' << n;
 		}
@@ -219,7 +222,7 @@ void MainWindow::nextStep() {
 void MainWindow::on_startStop_clicked() {
 	if( ui->startStop->text() == "Start" ) {
 		ui->startStop->setText( "Stop" );
-		setWindowTitle( "Labirynt (szukam...)" );
+		setWindowTitle( windowTitle + " (szukam...)" );
 		ui->openImage->setDisabled( true );
 		ui->alg->setDisabled( true );
 		ui->paint->setDisabled( true );
@@ -253,7 +256,7 @@ void MainWindow::on_startStop_clicked() {
 
 	} else {
 		ui->startStop->setText( "Start" );
-		setWindowTitle( "Labirynt" );
+		setWindowTitle( windowTitle );
 		ui->openImage->setDisabled( false );
 		ui->alg->setDisabled( false );
 		ui->paint->setDisabled( false );
@@ -268,4 +271,13 @@ void MainWindow::on_startStop_clicked() {
 		timer->stop();
 
 	}
+}
+
+void MainWindow::on_symColorVisited_stateChanged(int arg1) {
+	if( ui->startStop->text() == "Start" ) {
+		alg.paintAns( arg1 == Qt::Checked );
+	} else {
+		alg.paint( arg1 == Qt::Checked );
+	}
+	repaint();
 }

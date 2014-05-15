@@ -10,7 +10,7 @@
     <x>0</x>
     <y>0</y>
     <width>867</width>
-    <height>646</height>
+    <height>660</height>
    </rect>
   </property>
   <property name="minimumSize">
@@ -27,7 +27,7 @@
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>0</y>
+      <y>10</y>
       <width>191</width>
       <height>121</height>
      </rect>
@@ -124,7 +124,7 @@
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>130</y>
+      <y>140</y>
       <width>191</width>
       <height>111</height>
      </rect>
@@ -195,7 +195,7 @@
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>350</y>
+      <y>360</y>
       <width>191</width>
       <height>71</height>
      </rect>
@@ -219,7 +219,7 @@
       <number>60</number>
      </property>
      <property name="value">
-      <number>-10</number>
+      <number>10</number>
      </property>
      <property name="orientation">
       <enum>Qt::Horizontal</enum>
@@ -235,7 +235,7 @@
       </rect>
      </property>
      <property name="text">
-      <string>operacji/sek.: 0.1</string>
+      <string>operacji/sek.: 10.0</string>
      </property>
     </widget>
    </widget>
@@ -243,9 +243,9 @@
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>430</y>
+      <y>440</y>
       <width>191</width>
-      <height>101</height>
+      <height>121</height>
      </rect>
     </property>
     <property name="title">
@@ -255,7 +255,7 @@
      <property name="geometry">
       <rect>
        <x>10</x>
-       <y>50</y>
+       <y>70</y>
        <width>171</width>
        <height>31</height>
       </rect>
@@ -277,13 +277,13 @@
      <property name="geometry">
       <rect>
        <x>10</x>
-       <y>80</y>
+       <y>100</y>
        <width>181</width>
        <height>16</height>
       </rect>
      </property>
      <property name="text">
-      <string>zakres koloru: 100</string>
+      <string>zakres kolejki: 100</string>
      </property>
     </widget>
     <widget class="QCheckBox" name="symDisableScreen">
@@ -296,7 +296,23 @@
       </rect>
      </property>
      <property name="text">
-      <string>Wyłącz obraz</string>
+      <string>Nie odświeżaj</string>
+     </property>
+    </widget>
+    <widget class="QCheckBox" name="symColorVisited">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>50</y>
+       <width>151</width>
+       <height>20</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Koloruj odwiedzone</string>
+     </property>
+     <property name="checked">
+      <bool>true</bool>
      </property>
     </widget>
    </widget>
@@ -307,7 +323,7 @@
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>540</y>
+      <y>570</y>
       <width>191</width>
       <height>81</height>
      </rect>
@@ -375,7 +391,7 @@
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>250</y>
+      <y>260</y>
       <width>191</width>
       <height>91</height>
      </rect>
