@@ -190,14 +190,13 @@ void MainWindow::nextStep() {
 			return;
 		}
 		if( statsStream!=Q_NULLPTR ) {
-			(*statsStream) << '\n' << alg.currentPointNum() << ',' << alg.queueLength() << ',' << alg.workPoint().x() << ',' << alg.workPoint().y();
+			(*statsStream) << '\n' << alg.currentPointNum() << ',' << alg.queueLength() << ','
+						   << alg.workpointPathLength() << ','
+						   << alg.workPoint().x() << ',' << alg.workPoint().y();
 		}
 	}
 	if( ! ui->symDisableScreen->isChecked() ) {
 		int n=alg.paint( ui->symColorVisited->isChecked() );
-		if( statsStream!=Q_NULLPTR ) {
-			(*statsStream) << ',' << n;
-		}
 		if( ui->followPathEnd->isChecked() ) {
 			imageCenter.setX( alg.workPoint().x() );
 			imageCenter.setY( alg.workPoint().y() );
@@ -220,7 +219,7 @@ void MainWindow::on_startStop_clicked() {
 		if( ui->statsMake->isChecked() ) {
 			statsFile.open( QIODevice::WriteOnly | QIODevice::Text );
 			statsStream = new QTextStream( & statsFile );
-			(*statsStream) << "krok,kolejka,x,y,sciezka";
+			(*statsStream) << "krok,kolejka,sciezka,x,y";
 		} else {
 			statsStream=Q_NULLPTR;
 		}

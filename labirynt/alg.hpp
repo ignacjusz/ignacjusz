@@ -37,6 +37,7 @@ public:
 	static QRgb ScaleColorPercent(double t );
 
 	QPoint workPoint();
+	int workpointPathLength();
 	int currentPointNum();
 	int queueLength();
 

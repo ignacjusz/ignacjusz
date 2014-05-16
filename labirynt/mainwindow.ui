@@ -216,6 +216,11 @@
       <string>Stop: (x,x)</string>
      </property>
     </widget>
+    <zorder>depthFirst</zorder>
+    <zorder>breadthFirst</zorder>
+    <zorder>startPoint</zorder>
+    <zorder>stopPoint</zorder>
+    <zorder>startStop</zorder>
    </widget>
    <widget class="QGroupBox" name="symSpeed">
     <property name="geometry">
@@ -341,6 +346,15 @@
       <bool>true</bool>
      </property>
     </widget>
+    <zorder>symColorVal</zorder>
+    <zorder>symColorText</zorder>
+    <zorder>symDisableScreen</zorder>
+    <zorder>symColorVisited</zorder>
+    <zorder>followPathEnd</zorder>
+    <zorder>zoomNo</zorder>
+    <zorder>zoom1to1</zorder>
+    <zorder>zoomOut</zorder>
+    <zorder>zoomIn</zorder>
    </widget>
    <widget class="QGroupBox" name="stats">
     <property name="geometry">

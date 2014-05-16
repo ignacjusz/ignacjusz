@@ -253,6 +253,10 @@ QPoint Alg::workPoint() {
 	return workPoint_;
 }
 
+int Alg::workpointPathLength() {
+	return parent_( workPoint_ ).v;
+}
+
 int Alg::currentPointNum() {
 	return currentPointNum_;
 }
