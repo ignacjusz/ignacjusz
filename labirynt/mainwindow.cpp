@@ -151,6 +151,10 @@ void MainWindow::on_zoomNo_clicked() {
 	repaint();
 	DE << zoom;
 }
+void MainWindow::on_zoom1to1_clicked() {
+	zoom=0;
+	repaint();
+}
 
 void MainWindow::on_symSpeedVal_valueChanged(int value) {
 	stepTimeMsec=1000/pow(10,value/10.0);
@@ -193,6 +197,10 @@ void MainWindow::nextStep() {
 		int n=alg.paint( ui->symColorVisited->isChecked() );
 		if( statsStream!=Q_NULLPTR ) {
 			(*statsStream) << ',' << n;
+		}
+		if( ui->followPathEnd->isChecked() ) {
+			imageCenter.setX( alg.workPoint().x() );
+			imageCenter.setY( alg.workPoint().y() );
 		}
 		repaint();
 	}
@@ -268,3 +276,4 @@ void MainWindow::on_saveImage_clicked() {
 		alg.printImage().save( nazwa, "PNG" );
 	}
 }
+

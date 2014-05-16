@@ -46,6 +46,8 @@ private slots:
 
 	void on_saveImage_clicked();
 
+	void on_zoom1to1_clicked();
+
 public slots:
 	void nextStep();
 
