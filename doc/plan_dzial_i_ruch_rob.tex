@@ -2,8 +2,8 @@
 %cała konfiguracja TeXa
 \usepackage[utf8]{inputenc}
 
-\def \MYHEADER {Planowanie działań i ruchu robotów}
-\def \MYTITLE {Wyszukiwanie ścieżki w labiryncie\\za pomocą algorytmów \\przeszukiwania wszerz \\oraz\\przeszukiwania w głąb}
+\def \MYHEADER {Planowanie działań i~ruchu robotów}
+\def \MYTITLE {Wyszukiwanie ścieżki w~labiryncie\\za pomocą algorytmów \\przeszukiwania wszerz \\oraz\\przeszukiwania w~głąb}
 \def \MYPDFTITLE {Plan.dzial.i.ruch.rob}
 
 \def \MYPDFDATE {\today}
@@ -35,26 +35,119 @@
 \setcounter{tocdepth}{3}
 \tableofcontents
 \newpage
+
 \section{Wstęp}
+
+Robot mobilny, poza możliwością poruszania się musi także mieć umiejętność wybrania swojej trasy.
+Ścieżka ta musi gwarantować bezkolizyjność. 
+Zwykle też chcemy minimalizować koszty wyrażany np. jako ilość energii potrzebna do przebycia trasy 
+lub czas jej pokonania.
+W~celu uproszczenia obliczeń oraz zapisania przestrzeni (środowiska) w~postaci cyfrowej przedstawiamy 
+otoczenie w~postaci grafu. 
+Poszczególne krawędzie grafu oznaczają ścieżki, których przebycie nie niesie za sobą żadnych 
+,,niespodzianek''\footnote{Przetworzenie przestrzeni na graf, oraz ustalenie wag krawędzi jest innym 
+zadaniem, nie rozpatrywanym w~tej pracy.}.
+Oznacza to, że planowanie ścieżki sprowadza się do znalezienia jej w~grafie.
+
+Celem projektu jest stworzenie programu wizualizującego wyszukiwanie ścieżki w~labiryncie -- grafie.
+
 \subsection{Omówienie algorytmów}
-A że to są najprostsze i w ogóle słabe ale działają i kto nie ma algorytmu ten ma mocny procesor.
+
+Metody przeszukiwania grafów można podzielić na dwie podstawowe grupy: 
+przeszukiwania ślepe (ang. \emph{blind search}) oraz przeszukiwania zachłanne i~heurystyczne.
+
+Przeszukiwania ślepe są najprostszymi algorytmami. 
+Nie uwzględniają one żadnych zależności dotyczących wag krawędzi.
+Takimi algorytmami są \emph{przeszukiwanie w~głąb} oraz \emph{przeszukiwanie wszerz}.
+
+Algorytmy zachłanne i~heurystyczne zwykle znajdują optymalną ścieżkę w~grafie 
+(np. alg. Dijkstry), a~używanie heurystyki (np. alg. A*) powoduje zdecydowane przyspieszenie obliczeń.
+
 \subsubsection{Przeszukiwanie wszerz}
-\subsubsection{Przeszukiwanie w głąb}
+W celu znalezienia ścieżki od wierzchołka A~do wierzchołka B~algorytm wykonuje następujące kroki:
+\begin{algorithm}
+\caption{Przeszukiwanie wszerz}
+\label{algorytm_wszerz}
+\begin{algorithmic}[1]
+\STATE{Dodaj wierzchołek A~do kolejki.}
+\WHILE{kolejka nie jest pusta}
+	\STATE{Pobierz \underline{pierwszy} wierzchołek z~kolejki.}
+	\FORALL{wierzchołków połączonych z~bieżącym}
+		\IF{wierzchołek nie był odwiedzony}
+			\STATE{Dodaj wierzchołek na \underline{koniec} kolejki.}
+		\ENDIF
+	\ENDFOR
+\ENDWHILE
+\end{algorithmic}
+\end{algorithm}
+
+Taka metodyka powoduje dotarcie do każdego z~wierzchołków w~grafie, jeśli tylko istnieje ścieżka do niego.
+Dodatkowo, jeśli wagi krawędzi są równe to algorytm ten jest równoważny z~algorytmem Dijkstry i~znajduje 
+najkrótszą ścieżkę.
+
+\subsubsection{Przeszukiwanie w~głąb}
+Algorytm ten jest bardzo zbliżony do przeszukiwania wszerz, jedynie różni się tylko kolejnością pobierania 
+wierzchołków z~kolejki.
+\begin{algorithm}
+\caption{Przeszukiwanie w~głąb}
+\label{algorytm_w_glab}
+\begin{algorithmic}[1]
+\STATE{Dodaj wierzchołek A~do kolejki.}
+\WHILE{kolejka nie jest pusta}
+	\STATE{Pobierz \underline{ostatni} wierzchołek z~kolejki.}
+	\FORALL{wierzchołków połączonych z~bieżącym}
+		\IF{wierzchołek nie był odwiedzony}
+			\STATE{Dodaj wierzchołek na \underline{koniec} kolejki.}
+		\ENDIF
+	\ENDFOR
+\ENDWHILE
+\end{algorithmic}
+\end{algorithm}
+
+Powoduje to jednak możliwość wystąpienia sytuacji w~której znaleziona ścieżka będzie dłuższa niż optymalna.
+
+\begin{figure}[!h]
+\centering
+\framebox{\includegraphics[angle=0,width=0.3\textwidth]{img/petla.png}}
+\caption{Ścieżka nieoptymalna znaleziona przeszukiwaniem w~głąb (A zielony, B~czerwony)\label{petla}}
+\end{figure}
 
 \subsection{Typy labiryntów}
-Opisanie krótkie czemu są trudne i łatwe dla człowieka.
+Robot porusza się w~przestrzeni dwuwymiarowej z~przeszkodami. 
+W~tym projekcie przyjęto metodę nałożenia siatki na przestrzeń. 
+Powoduje to powstanie dwóch typów punktów: dozwolonych i~zabronionych. 
+Z~punktu dozwolonego można przejść na sąsiadujące z~nim punkty dozwolone.
+
+Labiryntem nazywamy obszar w~którym znalezienie ścieżki (przez człowieka) jest utrudnione.
+Zwykle wynika to z~dużej ilości rozwidleń danej ścieżki. 
+Rozwidlenia te dodatkowo nie prowadzą do punktu końcowego. 
+Typ mapy (labirynt lub nie) nie ma żadnego wpływu na działanie algorytmu, gdyż algorytm w~przeciwieństwie do 
+człowieka potrafi zapamiętać dowolnie długa i~skomplikowaną ścieżkę.
 
 \subsubsection{Wpływ grubości ścieżki}
-Opis, czemu labirynt ze ścieżką o grubości 2 i więcej może być gorszy. Ja to napiszę (PM).
+\begin{figure}[!htp]
+\begin{center}$
+\begin{array}{cp{2cm}c}
+\framebox{\includegraphics[angle=0,width=0.3\textwidth]{img/podwojna_g.png}} & &
+\framebox{\includegraphics[angle=0,width=0.3\textwidth]{img/podwojna_s.png}}
+\end{array}$
+\end{center}
+\caption{,,Zapętlenie'' przeszukiwania w~głąb (po lewej) w~porównaniu 
+do przeszukiwania wszerz(po prawej)\label{podwojna}}
+\end{figure}
+Badane algorytmy nie uwzględniają grubości ścieżki przechodząc taką ścieżkę kilka razy.
+Powoduje to wydłużanie czasu obliczeń, a~w przypadku przeszukiwania w~głąb znaleziona ścieżka może być
+zawinięta.
+
 
 \section{Realizacja}
-Bla bla bla w Qt, użycie opisane w dodatku \ref{sec_uruchomienie} na stronie \pageref{sec_uruchomienie}.
+Bla bla bla w~Qt, użycie opisane w~dodatku \ref{sec_uruchomienie} na stronie \pageref{sec_uruchomienie}.
 
 \section{Wyniki}
-Obrazki, wykresy długości kolejek i ścieżki i coś tam jeszcze ja zrobię (PM).
+Obrazki, wykresy długości kolejek i~ścieżki i~coś tam jeszcze ja zrobię (PM).
 
 \section{Wnioski}
-Że działa szybko i ładnie, że grube ścieżki zabijają przeszukiwanie w głąb.
+Że działa szybko i~ładnie, że grube ścieżki zabijają przeszukiwanie w~głąb.
 
 
 \appendix

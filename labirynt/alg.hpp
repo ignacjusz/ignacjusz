@@ -3,10 +3,10 @@
 #include <QPoint>
 #include <QImage>
 #include <QColor>
+#include <iostream>
 
 #include <QDebug>
-#define DE qDebug()
-
+#define DE std::cerr
 class MyPoint {
 public:
 	QPoint p;
@@ -52,7 +52,7 @@ protected:
 	QImage srcColorImage_;
 	QImage srcMonoImage_;
 	QImage printImage_;
-	static const int TRSHLD=5;
+	static const int TRSHLD=10;
 	static const int CLRMX=255;
 	int whitePointsNum_;
 	int currentPointNum_;

@@ -66,6 +66,27 @@
 ]{hyperref} 
 
 
+\usepackage[Procedura]{algorithm}
+\usepackage{algorithmic}
+\renewcommand\listalgorithmname{Spis procedur}
+\makeatletter
+\renewcommand\thealgorithm{\thechapter\@arabic\c@algorithm.}
+\makeatother
+\renewcommand\algorithmicforall{\textbf{Dla wszystkich}}
+\renewcommand\algorithmicdo{\textbf{wykonaj:}}
+\renewcommand\algorithmicendfor{\textbf{koniec.}}
+\renewcommand\algorithmicif{\textbf{Jeżeli}}
+\renewcommand\algorithmicthen{\textbf{to:}}
+\renewcommand\algorithmicendif{\textbf{koniec.}}
+\renewcommand\algorithmicelse{\textbf{w przeciwnym wypadku:}}
+\renewcommand\algorithmicreturn{\textbf{powrót:}}
+\renewcommand\algorithmicrequire{\textbf{Wymagane:}}
+\renewcommand\algorithmicwhile{\textbf{Dopóki}}
+\renewcommand\algorithmicendwhile{\textbf{koniec.}}
+\setlength{\algorithmicindent}{2em}
+
+
+
 \lstset{
 	language=\MYLSTSETLANGUAGE,
 	frame=\MYLSTSETFRAME,
@@ -103,7 +124,8 @@
 						  %\Roman{footnote}
 						  %\alph{footnote}
 
-\renewcommand{\thefootnote}{\fnsymbol{footnote}}
+\renewcommand{\thefootnote}{\roman{footnote}}
+%\fnsymbol{footnote}}
 \makeatletter 
 \def\@fnsymbol#1{\ensuremath{\ifcase#1\or %*\or przeniesione z
 \dagger\or \ddagger\or
