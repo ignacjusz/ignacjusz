@@ -13,7 +13,7 @@
 
 \def \MYLECTURER {\emph{Prowadzący:} \\dr~in\.z. I.~\textsc{Dulęba}}
 
-\def \MYLSTSETLANGUAGE {matlab}
+\def \MYLSTSETLANGUAGE {c++}
 
 \def \MYLSTSETFRAME {lines}
 						%none, %single, 
@@ -109,7 +109,7 @@ Powoduje to jednak możliwość wystąpienia sytuacji w~której znaleziona ście
 \begin{figure}[!h]
 \centering
 \framebox{\includegraphics[angle=0,width=0.3\textwidth]{img/petla.png}}
-\caption{Ścieżka nieoptymalna znaleziona przeszukiwaniem w~głąb (A zielony, B~czerwony)\label{petla}}
+\caption{Ścieżka nieoptymalna znaleziona przeszukiwaniem w~głąb (start -- zielony, stop -- czerwony)\label{petla}}
 \end{figure}
 
 \subsection{Typy labiryntów}
@@ -136,12 +136,33 @@ człowieka potrafi zapamiętać dowolnie długa i~skomplikowaną ścieżkę.
 do przeszukiwania wszerz(po prawej)\label{podwojna}}
 \end{figure}
 Badane algorytmy nie uwzględniają grubości ścieżki przechodząc taką ścieżkę kilka razy.
-Powoduje to wydłużanie czasu obliczeń, a~w przypadku przeszukiwania w~głąb znaleziona ścieżka może być
+Powoduje to wydłużanie czasu obliczeń, a~w~przypadku przeszukiwania w~głąb znaleziona ścieżka może być
 zawinięta.
 
 
 \section{Realizacja}
-Bla bla bla w~Qt, użycie opisane w~dodatku \ref{sec_uruchomienie} na stronie \pageref{sec_uruchomienie}.
+Program został napisany w języku \emph{C++} przy użyciu biblioteki \emph{Qt}.
+Obrazy są obsługiwane za pomocą klasy \emph{QImage}, a~graficzny interfejs jest zbudowany przy pomocy 
+technologii \emph{Qt Widgets}.
+\emph{Qt} dostarcza programiście dodatkowe elementy, które rozszerzają język \emph{C++} o nowe mechanizmy.
+Są to makra \lstinline!Q_OBJECT! oraz mechanizm sygnałów i~slotów.
+Te dodatkowe elementy wymuszają niestandardową kompilację, która jest omówiona 
+w~dodatku \ref{sec_uruchomienie}. na stronie \pageref{sec_uruchomienie}.
+
+\lstinline!Q_OBJECT! pozwala rozszerzyć możliwości każdej klasy o dodatkowe, zestandaryzowane mechanizmy
+biblioteki \emph{Qt}. Są one potrzebne do lepszego zarządzania pamięcią oraz dla mechanizmu sygnałów i~slotów.
+
+Dzięki sygnałom i~slotom można łączyć dowolne zdarzenia w~programie. 
+W~ten sposób obsługiwany jest interfejs użytkownika.
+Zdarzenia wywoływane akcjami użytkownika uruchamiają odpowiednie funkcje w klasie opisującej 
+główne okno programu. 
+Na schemacie \ref{przeplyw}. przedstawiono komunikację wewnątrz programu.
+
+\begin{scheme}[!h]
+\centering
+\includegraphics[angle=0,width=0.7\textwidth]{img/przeplyw.pdf}
+\caption{Przepływ danych i zdarzeń w programie\label{przeplyw}}
+\end{scheme}
 
 \section{Wyniki}
 Obrazki, wykresy długości kolejek i~ścieżki i~coś tam jeszcze ja zrobię (PM).
@@ -153,10 +174,31 @@ Obrazki, wykresy długości kolejek i~ścieżki i~coś tam jeszcze ja zrobię (P
 \appendix
 
 \section{Uruchomienie aplikacji\label{sec_uruchomienie}}
+\begin{figure}[!h]
+\centering
+\includegraphics[angle=0,width=1\textwidth]{img/gui.png}
+\caption{Interfejs programu\label{gui}}
+\end{figure}
+
+Po uruchomieniu aplikacji należy wczytać obraz, wybrać typ algorytmu i~określić, 
+czy program ma generować plik statystyk.
+Pozostałe opcje można ustawiać podczas pracy.
 
 \subsection{Kompilacja ze źródeł}
+Kompilację programu najłatwiej przeprowadzić w~środowisku \emph{Qt Creator}. 
+Jest ono dostępne dla platform Windows, Linux, Mac i innych.
+Po zaimportowaniu projektu używamy przycisku ,,build'' i otrzymujemy gotową aplikację.
+Środowisko samo wykona wszystkie etapy kompilacji.
+Kompilacja projektu w~\emph{Qt} składa się z kilku etapów: 
+\begin{itemize}
+\item \textsc{qmake}: na podstawie pliku \emph{*.pro} jest tworzony i uruchamiany plik Makefile, 
+w~którym zawarte są kolejne operacje,
+\item \textsc{uic}: przetwarza pliki \emph{*.ui} (opisujące interfejs graficzny) na pliki \emph{*.hpp},
+\item \textsc{moc}: przetwarza pliki \emph{*.hpp}, rozwijając makra \lstinline!Q_OBJECT! 
+oraz generując kod sygnałów i slotów,
+\item \textsc{g++}: wygenerowane pliki są kompilowane kompilatorem języka \emph{C++}.
+\end{itemize}
 
-\subsection{Obsługa aplikacji}
 
 \end{document}
 

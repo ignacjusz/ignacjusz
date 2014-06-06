@@ -261,6 +261,10 @@ int Alg::currentPointNum() {
 	return currentPointNum_;
 }
 
+int Alg::whitePointsNum() {
+	return whitePointsNum_;
+}
+
 int Alg::queueLength() {
 	return queue_.size();
 }

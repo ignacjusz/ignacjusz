@@ -65,6 +65,8 @@ private:
 	QFile statsFile;
 	QString windowTitle;
 	QTextStream * statsStream;
+	int printStepImage;
+	static const int NumOfPrintStepImages=9;
 
 	QTimer * timer;
 

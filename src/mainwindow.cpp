@@ -3,7 +3,7 @@
 #include <cmath>
 
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWindow),
-	paintAreaCorner( 210, 10), paintArea( paintAreaCorner.x(), paintAreaCorner.y(), 180, 180 ), zoom(1), imageCenter( 0, 0 ) {
+	paintAreaCorner( 210, 10), paintArea( paintAreaCorner.x(), paintAreaCorner.y(), 180, 180 ), zoom(1), imageCenter( 0, 0 ), printStepImage( 0 ) {
 
 	ui->setupUi(this);
 
@@ -141,6 +141,7 @@ void MainWindow::on_openImage_clicked() {
 	windowTitle="Labirynt: " +  fi.fileName();
 	setWindowTitle( windowTitle );
 	statsFile.setFileName( statsName );
+	printStepImage=0;
 }
 
 
@@ -183,10 +184,17 @@ void MainWindow::nextStep() {
 	for( int i=0; i<stepMul; ++i ) {
 		if( alg.step() == false ) {
 			on_startStop_clicked();//koniec pracy, auto-stop
-			DE << stepTimeMsec << stepMul;
 			alg.paintAns( ui->symColorVisited->isChecked() );
 			ui->symDisableScreen->setChecked( false );
 			repaint();
+
+			if( ui->statsStepImages->isChecked() ) {
+				QFileInfo f( imageName );
+				QString saveName=f.absolutePath() + "/" + f.baseName() + "_" + QString::number( printStepImage ) + ".png";
+				DE << saveName.toStdString() << ' end';
+				alg.printImage().save( saveName, "PNG" );
+			}
+
 			return;
 		}
 		if( statsStream!=Q_NULLPTR ) {
@@ -196,7 +204,8 @@ void MainWindow::nextStep() {
 		}
 	}
 	if( ! ui->symDisableScreen->isChecked() ) {
-		int n=alg.paint( ui->symColorVisited->isChecked() );
+		//int n=
+		alg.paint( ui->symColorVisited->isChecked() );
 		if( ui->followPathEnd->isChecked() ) {
 			imageCenter.setX( alg.workPoint().x() );
 			imageCenter.setY( alg.workPoint().y() );
@@ -206,6 +215,18 @@ void MainWindow::nextStep() {
 	int v=t.elapsed();
 	ui->statsCpu->setValue( 100*v/stepTimeMsec );
 	ui->statsStep->setText(	QString("Krok: %1 ms").arg( v ) );
+
+	if( ui->statsStepImages->isChecked() ) {
+//		DE << printStepImage*( alg.whitePointsNum()/(NumOfPrintStepImages-1) ) << std::endl;
+		if( alg.currentPointNum() > printStepImage*( alg.whitePointsNum()/(NumOfPrintStepImages-2) ) ) {
+			QFileInfo f( imageName );
+			QString saveName=f.absolutePath() + "/" + f.baseName() + "_" + QString::number( printStepImage ) + ".png";
+			DE << saveName.toStdString();
+			alg.printImage().save( saveName, "PNG" );
+
+			++printStepImage;
+		}
+	}
 }
 
 void MainWindow::on_startStop_clicked() {

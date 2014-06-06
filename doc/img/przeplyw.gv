@@ -1,0 +1,15 @@
+digraph G {
+margin=0
+//	rankdir=LR;
+	"Interfejs graficzny" -> "Okno główne" [label="Zdarzenie:\nkliknięcie"]
+	"Okno główne" -> "Interfejs graficzny" [label="Przerysuj interfejs", weight=3]
+	
+	"Interfejs graficzny" -> "Okno główne" [label="Zdarzenie:\nkółko myszy"]
+	"Interfejs graficzny" -> "Czasomierz" [label="Ustawienie parametrów"]
+	"Czasomierz" -> "Okno główne" [label="Zdarzenie:\nprzelicz krok"]
+	"Okno główne" -> "Algorytm" [label="Zdarzenie:\nprzelicz krok"]
+	"Okno główne" -> "Algorytm" [label="Zdarzenie:\nwygeneruj obraz"]
+	"Algorytm" -> "Okno główne" [label="Obraz wynikowy"]
+
+	
+}

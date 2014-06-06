@@ -216,17 +216,12 @@
       <string>Stop: (x,x)</string>
      </property>
     </widget>
-    <zorder>depthFirst</zorder>
-    <zorder>breadthFirst</zorder>
-    <zorder>startPoint</zorder>
-    <zorder>stopPoint</zorder>
-    <zorder>startStop</zorder>
    </widget>
    <widget class="QGroupBox" name="symSpeed">
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>390</y>
+      <y>410</y>
       <width>191</width>
       <height>71</height>
      </rect>
@@ -274,7 +269,7 @@
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>470</y>
+      <y>490</y>
       <width>191</width>
       <height>121</height>
      </rect>
@@ -346,15 +341,6 @@
       <bool>true</bool>
      </property>
     </widget>
-    <zorder>symColorVal</zorder>
-    <zorder>symColorText</zorder>
-    <zorder>symDisableScreen</zorder>
-    <zorder>symColorVisited</zorder>
-    <zorder>followPathEnd</zorder>
-    <zorder>zoomNo</zorder>
-    <zorder>zoom1to1</zorder>
-    <zorder>zoomOut</zorder>
-    <zorder>zoomIn</zorder>
    </widget>
    <widget class="QGroupBox" name="stats">
     <property name="geometry">
@@ -362,7 +348,7 @@
       <x>10</x>
       <y>290</y>
       <width>191</width>
-      <height>91</height>
+      <height>111</height>
      </rect>
     </property>
     <property name="title">
@@ -372,7 +358,7 @@
      <property name="geometry">
       <rect>
        <x>100</x>
-       <y>60</y>
+       <y>80</y>
        <width>81</width>
        <height>23</height>
       </rect>
@@ -391,7 +377,7 @@
      <property name="geometry">
       <rect>
        <x>10</x>
-       <y>60</y>
+       <y>80</y>
        <width>101</width>
        <height>21</height>
       </rect>
@@ -414,6 +400,19 @@
      </property>
      <property name="checked">
       <bool>false</bool>
+     </property>
+    </widget>
+    <widget class="QCheckBox" name="statsStepImages">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>50</y>
+       <width>171</width>
+       <height>20</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Generuj obrazki kroków</string>
      </property>
     </widget>
    </widget>

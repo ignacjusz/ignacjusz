@@ -39,6 +39,7 @@ public:
 	QPoint workPoint();
 	int workpointPathLength();
 	int currentPointNum();
+	int whitePointsNum();
 	int queueLength();
 
 protected:
