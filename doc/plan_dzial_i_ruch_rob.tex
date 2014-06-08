@@ -64,7 +64,7 @@ Algorytmy zachłanne i~heurystyczne zwykle znajdują optymalną ścieżkę w~gra
 (np. alg. Dijkstry), a~używanie heurystyki (np. alg. A*) powoduje zdecydowane przyspieszenie obliczeń.
 
 \subsubsection{Przeszukiwanie wszerz}
-W celu znalezienia ścieżki od wierzchołka A~do wierzchołka B~algorytm wykonuje następujące kroki:
+W celu znalezienia ścieżki od wierzchołka~A do wierzchołka~B algorytm wykonuje następujące kroki:
 \begin{algorithm}
 \caption{Przeszukiwanie wszerz}
 \label{algorytm_wszerz}
@@ -84,6 +84,8 @@ W celu znalezienia ścieżki od wierzchołka A~do wierzchołka B~algorytm wykonu
 Taka metodyka powoduje dotarcie do każdego z~wierzchołków w~grafie, jeśli tylko istnieje ścieżka do niego.
 Dodatkowo, jeśli wagi krawędzi są równe to algorytm ten jest równoważny z~algorytmem Dijkstry i~znajduje 
 najkrótszą ścieżkę.
+Jeśli interesuje nas dowolna ścieżka od~A do~B algorytm może zakończyć pracę w momencie dotarcia do punktu~B.
+
 
 \subsubsection{Przeszukiwanie w~głąb}
 Algorytm ten jest bardzo zbliżony do przeszukiwania wszerz, jedynie różni się tylko kolejnością pobierania 
@@ -164,12 +166,201 @@ Na schemacie \ref{przeplyw}. przedstawiono komunikację wewnątrz programu.
 \caption{Przepływ danych i zdarzeń w programie\label{przeplyw}}
 \end{scheme}
 
-\section{Wyniki}
-Obrazki, wykresy długości kolejek i~ścieżki i~coś tam jeszcze ja zrobię (PM).
+\section{Badania}
+Badania przeprowadzono na zestawie zawierającym trzy labirynty, przygotowane przy pomocy internetowego generatora \url{http://hereandabove.com/maze/mazeorig.form.html}:
+\begin{enumerate}
+\item Łatwy (\url{src/labirynty/maly_latwy.png}), \label{en_lat}
+\item Trudny (\url{src/labirynty/maly_trudny.png}), \label{en_tr}
+\item Łatwy powiększony (\url{src/labirynty/maly_latwy_powiekszony.png}). \label{en_lat_pow}
+\end{enumerate}
+Zostały one przygotowane tak, aby posiadały pewne cechy wspólne:
+labirynt~\ref{en_lat}.~i~\ref{en_tr}. mają taką samą ilość punktów do odwiedzenia.
+Labirynt łatwy powiększony~(\ref{en_lat_pow}.) jest labiryntem~\ref{en_lat}. przeskalowanym dwukrotnie.
+Oznacza to, że każda ścieżka jest podwójnej grubości.
+
+Badano jak zachowuje się ilość elementów w kolejce oraz jaką długość ma ścieżka do punktu odwiedzanego
+w~danym kroku.
+
+\subsection{Labirynt łatwy}
+Labirynt został określona jako łatwy, gdyż zawiera dużo prostych ścieżek i~mało rozgałęzień.
+Poniższe obrazy przedstawiają kroki pracy algorytmu, kolor oznacza kolejność odwiedzenia punktów:
+niebieski -- początek, zielony -- środek, czerwony -- koniec (punkty odwiedzone jako ostatnie).
+
+\begin{figure}[!htp]
+\begin{center}$
+\begin{array}{llll}
+\includegraphics[angle=0,width=0.225\textwidth]{img/latwy_w_glab/easy_maze_0.png} & 
+\includegraphics[angle=0,width=0.225\textwidth]{img/latwy_w_glab/easy_maze_1.png} & 
+\includegraphics[angle=0,width=0.225\textwidth]{img/latwy_w_glab/easy_maze_2.png} & 
+\includegraphics[angle=0,width=0.225\textwidth]{img/latwy_w_glab/easy_maze_3.png}
+\\
+\includegraphics[angle=0,width=0.225\textwidth]{img/latwy_w_glab/easy_maze_4.png} & 
+\includegraphics[angle=0,width=0.225\textwidth]{img/latwy_w_glab/easy_maze_5.png} & 
+\includegraphics[angle=0,width=0.225\textwidth]{img/latwy_w_glab/easy_maze_6.png} & 
+\includegraphics[angle=0,width=0.225\textwidth]{img/latwy_w_glab/easy_maze_7.png}
+\end{array}$
+\end{center}
+\caption{Przeszukiwanie w głąb -- labirynt łatwy}
+\end{figure}
+
+\begin{figure}[!htp]
+\begin{center}$
+\begin{array}{llll}
+\includegraphics[angle=0,width=0.225\textwidth]{img/latwy_wszerz/easy_maze_0.png} & 
+\includegraphics[angle=0,width=0.225\textwidth]{img/latwy_wszerz/easy_maze_1.png} & 
+\includegraphics[angle=0,width=0.225\textwidth]{img/latwy_wszerz/easy_maze_2.png} & 
+\includegraphics[angle=0,width=0.225\textwidth]{img/latwy_wszerz/easy_maze_3.png}
+\\
+\includegraphics[angle=0,width=0.225\textwidth]{img/latwy_wszerz/easy_maze_4.png} & 
+\includegraphics[angle=0,width=0.225\textwidth]{img/latwy_wszerz/easy_maze_5.png} & 
+\includegraphics[angle=0,width=0.225\textwidth]{img/latwy_wszerz/easy_maze_6.png} & 
+\includegraphics[angle=0,width=0.225\textwidth]{img/latwy_wszerz/easy_maze_7.png}
+\end{array}$
+\end{center}
+\caption{Przeszukiwanie wszerz -- labirynt łatwy}
+\end{figure}
+
+Powyższe obrazy przedstawiają kilka kroków przeszukiwania obydwoma badanymi algorytmami.
+
+\subsection{Labirynt trudny}
+
+Trudność labiryntu wynika z dużej ilości załamań i rozgałęzień ścieżek.
+
+\begin{figure}[!htp]
+\begin{center}$
+\begin{array}{llll}
+\includegraphics[angle=0,width=0.225\textwidth]{img/trudny_w_glab/hard_maze_0.png} & 
+\includegraphics[angle=0,width=0.225\textwidth]{img/trudny_w_glab/hard_maze_1.png} & 
+\includegraphics[angle=0,width=0.225\textwidth]{img/trudny_w_glab/hard_maze_2.png} & 
+\includegraphics[angle=0,width=0.225\textwidth]{img/trudny_w_glab/hard_maze_3.png}
+\\
+\includegraphics[angle=0,width=0.225\textwidth]{img/trudny_w_glab/hard_maze_4.png} & 
+\includegraphics[angle=0,width=0.225\textwidth]{img/trudny_w_glab/hard_maze_5.png} & 
+\includegraphics[angle=0,width=0.225\textwidth]{img/trudny_w_glab/hard_maze_6.png} & 
+\includegraphics[angle=0,width=0.225\textwidth]{img/trudny_w_glab/hard_maze_7.png}
+\end{array}$
+\end{center}
+\caption{Przeszukiwanie w głąb -- labirynt trudny}
+\end{figure}
+
+\begin{figure}[!htp]
+\begin{center}$
+\begin{array}{llll}
+\includegraphics[angle=0,width=0.225\textwidth]{img/trudny_wszerz/hard_maze_0.png} & 
+\includegraphics[angle=0,width=0.225\textwidth]{img/trudny_wszerz/hard_maze_1.png} & 
+\includegraphics[angle=0,width=0.225\textwidth]{img/trudny_wszerz/hard_maze_2.png} & 
+\includegraphics[angle=0,width=0.225\textwidth]{img/trudny_wszerz/hard_maze_3.png}
+\\
+\includegraphics[angle=0,width=0.225\textwidth]{img/trudny_wszerz/hard_maze_4.png} & 
+\includegraphics[angle=0,width=0.225\textwidth]{img/trudny_wszerz/hard_maze_5.png} & 
+\includegraphics[angle=0,width=0.225\textwidth]{img/trudny_wszerz/hard_maze_6.png} & 
+\includegraphics[angle=0,width=0.225\textwidth]{img/trudny_wszerz/hard_maze_7.png}
+\end{array}$
+\end{center}
+\caption{Przeszukiwanie wszerz -- labirynt trudny}
+\end{figure}
+
+\subsection{Labirynt łatwy powiększony}
+Jest to labirynt łatwy powiększony dwukrotnie.
+Na obrazach można zaobserwować ,,szachownicę'' wewnątrz niektórych korytarzy. 
+Oznacza to, że dany korytarz jest odwiedzany kolejny raz po odwiedzeniu innego obszaru.
+Zazwyczaj jest to powrót ze ślepej ścieżki. 
+
+
+\begin{figure}[!htp]
+\begin{center}$
+\begin{array}{llll}
+\includegraphics[angle=0,width=0.225\textwidth]{img/latwy_powiekszony_w_glab/maze_0.png} & 
+\includegraphics[angle=0,width=0.225\textwidth]{img/latwy_powiekszony_w_glab/maze_1.png} & 
+\includegraphics[angle=0,width=0.225\textwidth]{img/latwy_powiekszony_w_glab/maze_2.png} & 
+\includegraphics[angle=0,width=0.225\textwidth]{img/latwy_powiekszony_w_glab/maze_3.png}
+\\
+\includegraphics[angle=0,width=0.225\textwidth]{img/latwy_powiekszony_w_glab/maze_4.png} & 
+\includegraphics[angle=0,width=0.225\textwidth]{img/latwy_powiekszony_w_glab/maze_5.png} & 
+\includegraphics[angle=0,width=0.225\textwidth]{img/latwy_powiekszony_w_glab/maze_6.png} & 
+\includegraphics[angle=0,width=0.225\textwidth]{img/latwy_powiekszony_w_glab/maze_7.png}
+\end{array}$
+\end{center}
+\caption{Przeszukiwanie w głąb -- labirynt łatwy powiększony}
+\end{figure}
+
+\begin{figure}[!htp]
+\begin{center}$
+\begin{array}{llll}
+\includegraphics[angle=0,width=0.225\textwidth]{img/latwy_powiekszony_wszerz/maze_0.png} & 
+\includegraphics[angle=0,width=0.225\textwidth]{img/latwy_powiekszony_wszerz/maze_1.png} & 
+\includegraphics[angle=0,width=0.225\textwidth]{img/latwy_powiekszony_wszerz/maze_2.png} & 
+\includegraphics[angle=0,width=0.225\textwidth]{img/latwy_powiekszony_wszerz/maze_3.png}
+\\
+\includegraphics[angle=0,width=0.225\textwidth]{img/latwy_powiekszony_wszerz/maze_4.png} & 
+\includegraphics[angle=0,width=0.225\textwidth]{img/latwy_powiekszony_wszerz/maze_5.png} & 
+\includegraphics[angle=0,width=0.225\textwidth]{img/latwy_powiekszony_wszerz/maze_6.png} & 
+\includegraphics[angle=0,width=0.225\textwidth]{img/latwy_powiekszony_wszerz/maze_7.png}
+\end{array}$
+\end{center}
+\caption{Przeszukiwanie wszerz -- labirynt łatwy powiększony}
+\end{figure}
+
+
+
+\subsection{Porównanie}
+Podczas pracy algorytm korzysta z kolejki punktów do odwiedzenia oraz generuje ścieżkę do bieżącego punktu.
+Wielkość tych obiektów podczas pracy przedstawiają poniższe wykresy.
+\begin{figure}[!htp]
+\begin{center}$
+\begin{array}{ll}
+\includegraphics[angle=0,width=0.49\textwidth]{img/latwy_kolejka.pdf} & 
+\includegraphics[angle=0,width=0.49\textwidth]{img/latwy_sciezka.pdf}
+\end{array}$
+\end{center}
+\caption{Długość kolejki i długość ścieżki -- labirynt łatwy}
+\end{figure}
+
+\begin{figure}[!htp]
+\begin{center}$
+\begin{array}{ll}
+\includegraphics[angle=0,width=0.49\textwidth]{img/trudny_kolejka.pdf} & 
+\includegraphics[angle=0,width=0.49\textwidth]{img/trudny_sciezka.pdf}
+\end{array}$
+\end{center}
+\caption{Długość kolejki i długość ścieżki -- labirynt trudny}
+\end{figure}
+
+\begin{figure}[!htp]
+\begin{center}$
+\begin{array}{lll}
+\includegraphics[angle=0,width=0.31\textwidth]{img/latwy_powiekszony_kolejka.pdf} & 
+\includegraphics[angle=0,width=0.31\textwidth]{img/latwy_powiekszony_kolejka_log.pdf} & 
+\includegraphics[angle=0,width=0.31\textwidth]{img/latwy_powiekszony_sciezka.pdf}
+\end{array}$
+\end{center}
+\caption{Długość kolejki (skala liniowa i logarytmiczna) oraz długość ścieżki -- labirynt łatwy powiększony}
+\end{figure}
+
+W przypadku labiryntów o pojedynczej grubości ścieżki żaden z algorytmów nie wykazuje znaczącej przewagi.
+Dodatkowo można zaobserwować ważną cechę przeszukiwania wszerz: gdy wagi wszystkich krawędzi są równe to jest
+ono równoznaczne z algorytmem Dijkstry. 
+Pokazuje to niemalejąca długość ścieżki do kolejno odwiedzanych punktów.
+
+Jeśli zaś grubość ścieżki jest większa od~1, to pojawiają się cykle i~możliwość zawijania się ścieżki.
+W takiej sytuacji algorytm przeszukiwania w~głąb tworzy bardzo długą kolejkę wynikającą 
+z~dodania punktów wzdłuż takiego przejścia.
+Możliwość tworzenia kolejki w~taki sposób powoduje, że ma ona dużo większą długość.
+
+W przypadku przeszukiwania wszerz kolejka jest dłuższa o ok. współczynnik skalowania.
 
 \section{Wnioski}
-Że działa szybko i~ładnie, że grube ścieżki zabijają przeszukiwanie w~głąb.
 
+\begin{itemize}
+\item Podstawowym parametrem różnicującym labirynty jest ich grubość ścieżki.\\~
+\item Dla labiryntów o ścieżkach grubości jeden ciężko wskazać lepszy z algorytmów. 
+Jedynie w przypadku wystąpienia cyklu przeszukiwanie w głąb może znaleźć nieoptymalną ścieżkę.\\~
+\item Jeśli interesuje nas znalezienie dowolnej ścieżki do zadanego punktu żaden 
+z~algorytmów nie gwarantuje jej szybszego znalezienia.\\~
+\item Dla labiryntu z~grubymi ścieżkami przeszukiwanie w~głąb generuje dużo dłuższe kolejki.\\~
+\item Czas procesora wykorzystywany na wizualizację jest porównywalny z czasem obliczeń algorytmów.\\~
+\item Dla ogólnych zastosowań algorytm przeszukiwania wszerz jest lepszy.\\~
+\end{itemize}
 
 \appendix
 
