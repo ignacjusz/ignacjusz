@@ -49,7 +49,7 @@ Poszczególne krawędzie grafu oznaczają ścieżki, których przebycie nie nies
 zadaniem, nie rozpatrywanym w~tej pracy.}.
 Oznacza to, że planowanie ścieżki sprowadza się do znalezienia jej w~grafie.
 
-Celem projektu jest stworzenie programu wizualizującego wyszukiwanie ścieżki w~labiryncie -- grafie.
+Celem projektu jest stworzenie programu wizualizującego wyszukiwanie ścieżki w~labiryncie.
 
 \subsection{Omówienie algorytmów}
 
@@ -306,36 +306,36 @@ Zazwyczaj jest to powrót ze ślepej ścieżki.
 \subsection{Porównanie}
 Podczas pracy algorytm korzysta z kolejki punktów do odwiedzenia oraz generuje ścieżkę do bieżącego punktu.
 Wielkość tych obiektów podczas pracy przedstawiają poniższe wykresy.
-\begin{figure}[!htp]
+\begin{plot}[!htp]
 \begin{center}$
 \begin{array}{ll}
-\includegraphics[angle=0,width=0.49\textwidth]{img/latwy_kolejka.pdf} & 
-\includegraphics[angle=0,width=0.49\textwidth]{img/latwy_sciezka.pdf}
+\includegraphics[angle=0,width=0.49\textwidth]{img/latwy_kolejka.png} & 
+\includegraphics[angle=0,width=0.49\textwidth]{img/latwy_sciezka.png}
 \end{array}$
 \end{center}
 \caption{Długość kolejki i długość ścieżki -- labirynt łatwy}
-\end{figure}
+\end{plot}
 
-\begin{figure}[!htp]
+\begin{plot}[!htp]
 \begin{center}$
 \begin{array}{ll}
-\includegraphics[angle=0,width=0.49\textwidth]{img/trudny_kolejka.pdf} & 
-\includegraphics[angle=0,width=0.49\textwidth]{img/trudny_sciezka.pdf}
+\includegraphics[angle=0,width=0.49\textwidth]{img/trudny_kolejka.png} & 
+\includegraphics[angle=0,width=0.49\textwidth]{img/trudny_sciezka.png}
 \end{array}$
 \end{center}
 \caption{Długość kolejki i długość ścieżki -- labirynt trudny}
-\end{figure}
+\end{plot}
 
-\begin{figure}[!htp]
+\begin{plot}[!htp]
 \begin{center}$
 \begin{array}{lll}
-\includegraphics[angle=0,width=0.31\textwidth]{img/latwy_powiekszony_kolejka.pdf} & 
-\includegraphics[angle=0,width=0.31\textwidth]{img/latwy_powiekszony_kolejka_log.pdf} & 
-\includegraphics[angle=0,width=0.31\textwidth]{img/latwy_powiekszony_sciezka.pdf}
+\includegraphics[angle=0,width=0.31\textwidth]{img/latwy_powiekszony_kolejka.png} & 
+\includegraphics[angle=0,width=0.31\textwidth]{img/latwy_powiekszony_kolejka_log.png} & 
+\includegraphics[angle=0,width=0.31\textwidth]{img/latwy_powiekszony_sciezka.png}
 \end{array}$
 \end{center}
 \caption{Długość kolejki (skala liniowa i logarytmiczna) oraz długość ścieżki -- labirynt łatwy powiększony}
-\end{figure}
+\end{plot}
 
 W przypadku labiryntów o pojedynczej grubości ścieżki żaden z algorytmów nie wykazuje znaczącej przewagi.
 Dodatkowo można zaobserwować ważną cechę przeszukiwania wszerz: gdy wagi wszystkich krawędzi są równe to jest
