@@ -150,7 +150,7 @@ void MainWindow::on_zoomNo_clicked() {
 	imageCenter.setX( alg.printImage().width()/2 );
 	imageCenter.setY( alg.printImage().height()/2 );
 	repaint();
-	DE << zoom;
+//	D E << zoom;
 }
 void MainWindow::on_zoom1to1_clicked() {
 	zoom=0;
@@ -191,7 +191,7 @@ void MainWindow::nextStep() {
 			if( ui->statsStepImages->isChecked() ) {
 				QFileInfo f( imageName );
 				QString saveName=f.absolutePath() + "/" + f.baseName() + "_" + QString::number( printStepImage ) + ".png";
-				DE << saveName.toStdString() << ' end';
+//				D E << saveName.toStdString() << ' end';
 				alg.printImage().save( saveName, "PNG" );
 			}
 
@@ -217,11 +217,11 @@ void MainWindow::nextStep() {
 	ui->statsStep->setText(	QString("Krok: %1 ms").arg( v ) );
 
 	if( ui->statsStepImages->isChecked() ) {
-//		DE << printStepImage*( alg.whitePointsNum()/(NumOfPrintStepImages-1) ) << std::endl;
+//		D E << printStepImage*( alg.whitePointsNum()/(NumOfPrintStepImages-1) ) << std::endl;
 		if( alg.currentPointNum() > printStepImage*( alg.whitePointsNum()/(NumOfPrintStepImages-2) ) ) {
 			QFileInfo f( imageName );
 			QString saveName=f.absolutePath() + "/" + f.baseName() + "_" + QString::number( printStepImage ) + ".png";
-			DE << saveName.toStdString();
+//			D E << saveName.toStdString();
 			alg.printImage().save( saveName, "PNG" );
 
 			++printStepImage;
